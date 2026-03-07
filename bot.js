@@ -225,7 +225,7 @@ function sendMonthlyBirthdays(monthIndex = null, channel = null) {
   } else {
     client.guilds.cache.forEach(guild => {
       const ch = guild.channels.cache.find(
-        c => c.isTextBased() && c.name.toLowerCase() === "birthdays" &&
+        c => c.isTextBased() && c.name.toLowerCase() === "⋆˚☾⭒˚・birthdays" &&
              c.permissionsFor(guild.members.me).has("SendMessages")
       );
       if (ch) ch.send(message);
@@ -261,7 +261,7 @@ function scheduleMonthlySummary() {
 function sendTodaysBirthdaysToAllGuilds() {
   client.guilds.cache.forEach(guild => {
     const channel = guild.channels.cache.find(
-      c => c.isTextBased() && c.name.toLowerCase() === "birthdays" &&
+      c => c.isTextBased() && c.name.toLowerCase() === "⋆˚☾⭒˚・birthdays" &&
            c.permissionsFor(guild.members.me).has("SendMessages")
     );
     if (channel) sendTodaysBirthdays(channel);
@@ -288,7 +288,7 @@ client.on("messageCreate", message => {
   // !happybirthday
   if (msg === "!happybirthday") {
     const channel = message.guild.channels.cache.find(
-      c => c.isTextBased() && c.name.toLowerCase() === "birthdays" &&
+      c => c.isTextBased() && c.name.toLowerCase() === "⋆˚☾⭒˚・birthdays" &&
            c.permissionsFor(message.guild.members.me).has("SendMessages")
     );
     if (!channel) return message.reply("⚠️ I can't find the birthdays channel :(");
