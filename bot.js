@@ -173,12 +173,12 @@ function sendTodaysBirthdays(channel) {
       messagesToSend.push(template.replace(/{fullName}/g, c.fullName)
                                   .replace(/{birthDate}/g, c.birthDate)
                                   .replace(/{deathDate}/g, c.deathDate));
+      );
     }
   });
 
-  if (messagesToSend.length === 0) {
-    channel.send("It isn't anyone's birthday today :(");
-  } else {
+  // Send messages if there are any
+  if (messagesToSend.length > 0) {
     messagesToSend.forEach(msg => channel.send(msg));
   }
 }
