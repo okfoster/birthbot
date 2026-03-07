@@ -349,4 +349,4 @@ if (msg.startsWith("!check") && msg.endsWith("birthdays")) {
 });
 
 // - login -
-client.login("MTQ3OTYwNjg1NTk1NjE2ODgwNQ.GbUz-y.XonizPkxaB6iyZVR3KH6mEs7g8E3z6-edH4BI0");
+client.login(process.env.BOT_TOKEN);
