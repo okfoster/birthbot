@@ -93,7 +93,7 @@ const characters = [
 const deadCharacters = [
   { name: "Roxie Brindley", fullName: "Roxie Brindley", birthDate: "1947-01-20" },
   { name: "Solara", fullName: "Solara Mercia-Angevin", birthDate: "1922-02-28" },
-  { name: "Belladonna", fullName: "Belladonna Alegria", birthDate: "1985-03-23" },
+  { name: "Belladonna", fullName: "Belladonna Alegria", birthDate: "1985-03-24" },
   { name: "Hayes", fullName: "Hayes Octavius", birthDate: "1902-03-24" },
   { name: "Callum", fullName: "Callum Faewulfe", birthDate: "1700-04-11" },
   { name: "Sung-ki", fullName: "Mok Sung-ki", birthDate: "1854-05-21" },
