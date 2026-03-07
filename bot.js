@@ -30,7 +30,7 @@ const characters = [
   { name: "Carlos", fullName: "Carlos Del Bosque Espinosa", birthDate: "1981-01-21" },
   { name: "Andreas", fullName: "Andreas Macado", birthDate: "2010-01-22" },
   { name: "Lex", fullName: "Lex Whitlock", birthDate: "2011-01-28" },
-  { name: "Victor and Alexander", fullName: "Victor and Alexander Wispon", birthDate: "1980-01-30" },
+  { name: "Victor & Alexander", fullName: "Victor & Alexander Wispon", birthDate: "1980-01-30" },
   { name: "Gabriel", fullName: "Gabriel Maywood", birthDate: "1935-02-06" },
   { name: "Maerwynn", fullName: "Maerwynn Wispon", birthDate: "2011-02-14" },
   { name: "Gladys", fullName: "Gladys Dewberry", birthDate: "1952-02-22" },
@@ -39,8 +39,8 @@ const characters = [
   { name: "Baubles", fullName: "Baubles", birthDate: "1989-03-16" },
   { name: "Kasper", fullName: "Kasper Vaughn", birthDate: "1999-04-05" },
   { name: "Rosemary", fullName: "Rosemary Roseblade", birthDate: "2007-04-09" },
-  { name: "Jett and Spencer", fullName: "Jett and Spencer Van Damme", birthDate: "2007-04-10" },
-  { name: "Boris and Lanolin", fullName: "Boris and Lanolin Lambrych", birthDate: "2008-04-13" },
+  { name: "Jett & Spencer", fullName: "Jett & Spencer Van Damme", birthDate: "2007-04-10" },
+  { name: "Boris & Lanolin", fullName: "Boris & Lanolin Lambrych", birthDate: "2008-04-13" },
   { name: "The Large Scary Man", fullName: "The Large Scary Man", birthDate: "1959-04-18" },
   { name: "Kara", fullName: "Kara Kento", birthDate: "1999-04-30" },
   { name: "Lotus", fullName: "Lotus Redtail", birthDate: "2011-05-01" },
@@ -50,10 +50,11 @@ const characters = [
   { name: "Eiro", fullName: "Eiro Audair", birthDate: "2010-05-28" },
   { name: "Lucian", fullName: "Lucian Ixtal", birthDate: "1986-06-01" },
   { name: "Ophelia", fullName: "Ophelia DiPietra", birthDate: "2007-06-09" },
+  { name: "Matthias", fullName: "Matthias Moen", birthDate: "2008-06-13" },
   { name: "Lancel", fullName: "Lancel Alegria", birthDate: "2000-06-21" },
   { name: "Angela", fullName: "Angela Del Bosque Ixtal", birthDate: "2016-06-24" },
   { name: "CJ", fullName: "CJ Doe", birthDate: "1998-06-25" },
-  { name: "Cinder and Sage", fullName: "Cinder and Sage Whitlock", birthDate: "2016-06-30" },
+  { name: "Cinder & Sage", fullName: "Cinder & Sage Whitlock", birthDate: "2016-06-30" },
   { name: "Maribelle", fullName: "Maribelle Orpheus", birthDate: "1985-07-05" },
   { name: "Nova", fullName: "Nova Sonastar", birthDate: "2007-07-08" },
   { name: "Scythian", fullName: "Scythian Igenmorgenschweissenmann", birthDate: "1986-07-19" },
@@ -66,12 +67,13 @@ const characters = [
   { name: "Sorin", fullName: "Sorin Valdis", birthDate: "1993-08-30" },
   { name: "Cassie", fullName: "Cassiopeia Heliotrope", birthDate: "2008-08-30" },
   { name: "Graham", fullName: "Graham Wispon", birthDate: "2008-09-02" },
+  { name: "Penny", fullName: "Penny Magus", birthDate: "2013-09-11" },
   { name: "Barley", fullName: "Barley Carley", birthDate: "2006-09-30" },
-  { name: "Lucius and Yvaine", fullName: "Lucius Regens von Caelum-Alegria and Yvaine von Caelum", birthDate: "1984-10-14" },
+  { name: "Lucius & Yvaine", fullName: "Lucius Regens von Caelum-Alegria & Yvaine von Caelum", birthDate: "1984-10-14" },
   { name: "Calix", fullName: "Calix Luciano", birthDate: "1979-10-29" },
   { name: "Cassandra", fullName: "Cassandra Nephthys", birthDate: "1985-10-31" },
   { name: "Artemisia", fullName: "Artemisia Maywood", birthDate: "2003-10-31" },
-  { name: "Jett and Spencer", fullName: "Jett and Spencer Van Damme", birthDate: "1949-10-31" },
+  { name: "Jett & Spencer", fullName: "Jett & Spencer Van Damme", birthDate: "1949-10-31" },
   { name: "Brindley", fullName: "Brindley Alegria-Audair-Whitlock", birthDate: "2025-10-31" },
   { name: "Dave", fullName: "Dave Faggetter", birthDate: "2011-11-11" },
   { name: "Inessa", fullName: "Inessa Solovyov", birthDate: "1992-11-11" },
@@ -80,14 +82,14 @@ const characters = [
   { name: "Layna", fullName: "Layna Wispon", birthDate: "2025-11-13" },
   { name: "Vendetta", fullName: "Vendetta Sekmeht Sabretooth Van Damme-Deathbringer-Johnson", birthDate: "1978-11-13" },
   { name: "Eden", fullName: "Eden Maywood", birthDate: "2008-12-01" },
-  { name: "Florence and Laurence", fullName: "Florence and Laurence Ixtal", birthDate: "2007-12-04" },
+  { name: "Florence & Laurence", fullName: "Florence & Laurence Ixtal", birthDate: "2007-12-04" },
   { name: "Angelina", fullName: "Angelina Malkovich", birthDate: "1983-12-05" },
   { name: "Bandit", fullName: "Bandit Van Damme", birthDate: "2010-12-08" },
   { name: "Viola", fullName: "Viola Whitlock", birthDate: "2008-12-11" },
   { name: "Avery", fullName: "Avery Whitlock", birthDate: "1979-12-14" },
   { name: "Tove", fullName: "Tovenaar Barlowe", birthDate: "1878-12-20" },
   { name: "Aisosa", fullName: "Aisosa Mokwena", birthDate: "1968-12-27" },
-  { name: "Wisteria, Freyja and Vesper", fullName: "Wisteria, Freyja and Vesper Roseblade", birthDate: "1968-12-28" },
+  { name: "Wisteria, Freyja & Vesper", fullName: "Wisteria, Freyja & Vesper Roseblade", birthDate: "1968-12-28" },
 ];
 
 const deadCharacters = [
@@ -166,8 +168,8 @@ if (character.name === "Isla" || character.name === "Bastian" || character.name 
 }
   
   // twins
-  const verb = character.name.includes("and") ? "were" : "was";
-  const pluralVerb = character.name.includes("and") ? "are" : "is";
+  const verb = character.name.includes("&") ? "were" : "was";
+  const pluralVerb = character.name.includes("&") ? "are" : "is";
 
   if (age > 90) {
     const template = oldMessages[Math.floor(Math.random() * oldMessages.length)];
