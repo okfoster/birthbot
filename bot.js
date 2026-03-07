@@ -20,16 +20,26 @@ const monthNames = [
 // data
 const characters = [
   { name: "Cecilia", fullName: "Cecilia Wispon", birthDate: "2007-01-07" },
+  { name: "Lupe", fullName: "Lupe Del Bosque Solis", birthDate: "2002-01-09" },
+  { name: "Merc", fullName: "Mercury Makri", birthDate: "2007-01-12" },
+  { name: "Carlos", fullName: "Carlos Del Bosque Espinosa", birthDate: "1981-01-21" },
   { name: "Andreas", fullName: "Andreas Macado", birthDate: "2010-01-22" },
   { name: "Lex", fullName: "Lex Whitlock", birthDate: "2011-01-28" },
   { name: "Victor and Alexander", fullName: "Victor and Alexander Wispon", birthDate: "1980-01-30" },
   { name: "Gabriel", fullName: "Gabriel Maywood", birthDate: "1935-02-06" },
   { name: "Gladys", fullName: "Gladys Dewberry", birthDate: "1952-02-22" },
   { name: "Corentin", fullName: "Corentin Whitlock", birthDate: "1980-03-06" },
+  { name: "Octivia & Leslie", fullName: "Octivia & Leslie D'Arques", birthDate: "1989-03-16" },
   { name: "Baubles", fullName: "Baubles", birthDate: "1989-03-16" },
+  { name: "Kasper", fullName: "Kasper Vaughn", birthDate: "1999-04-05" },
   { name: "The Large Scary Man", fullName: "The Large Scary Man", birthDate: "1959-04-18" },
   { name: "Jett and Spencer", fullName: "Jett and Spencer Van Damme", birthDate: "2007-04-10" },
+  { name: "Kara", fullName: "Kara Kento", birthDate: "1999-04-30" },
+  { name: "Sapphire", fullName: "Sapphire Laroche", birthDate: "2007-05-04" },
   { name: "Jude", fullName: "Jude Whitlock", birthDate: "2008-05-08" },
+  { name: "Cyrille", fullName: "Cyrille Visage", birthDate: "1974-05-13" },
+  { name: "Eiro", fullName: "Eiro Audair", birthDate: "2010-05-28" },
+  { name: "Angela", fullName: "Angela Del Bosque Ixtal", birthDate: "2016-06-24" },
   { name: "Cinder and Sage", fullName: "Cinder and Sage Whitlock", birthDate: "2016-06-30" },
   { name: "Maribelle", fullName: "Maribelle Orpheus", birthDate: "1985-07-05" },
   { name: "Nova", fullName: "Nova Sonastar", birthDate: "2007-07-08" },
@@ -38,9 +48,13 @@ const characters = [
   { name: "Avongara", fullName: "Avongara Signoria", birthDate: "1971-08-08" },
   { name: "Sennett Reue", fullName: "Headmaster Sennett Reue", birthDate: "1940-08-13" },
   { name: "Astrillia Wispon", fullName: "Astrillia Wispon", birthDate: "1924-08-21" },
+  { name: "Sorin", fullName: "Sorin Valdis", birthDate: "1993-08-30" },
   { name: "Graham", fullName: "Graham Wispon", birthDate: "2008-09-02" },
+  { name: "Barley", fullName: "Barley Carley", birthDate: "2006-09-30" },
   { name: "Calix", fullName: "Calix Luciano", birthDate: "1979-10-29" },
   { name: "Brindley", fullName: "Brindley Alegria-Audair-Whitlock", birthDate: "2025-10-31" },
+  { name: "Bastian", fullName: "Bastian Audair", birthDate: "2006-11-12" },
+  { name: "Circe", fullName: "Circe Nazaretian", birthDate: "2001-11-12" },
   { name: "Layna", fullName: "Layna Wispon", birthDate: "2025-11-13" },
   { name: "Vendetta", fullName: "Vendetta Sekmeht Sabretooth Van Damme-Deathbringer-Johnson", birthDate: "1978-11-13" },
   { name: "Eden", fullName: "Eden Maywood", birthDate: "2008-12-01" },
@@ -115,9 +129,13 @@ function getBirthdayMessage(character) {
   if (character.name === "Brindley") {
     return `Happy adoption day, **Brindley!**\n**Brindley Alegria-Audair-Whitlock** was adopted 10/31/2025.`;
   }
-  if (character.name === "Isla") {
+  if (character.name === "Isla", "Bastian") {
     return `Unfortunately, **${character.fullName}** is still alive.\n\n**${character.fullName}** was born on ${character.birthDate} and is turning ${age} today.`;
   }
+  
+  // twins
+  const verb = character.name.includes("and") ? "were" : "was";
+  const pluralVerb = character.name.includes("and") ? "are" : "is";
 
   if (age > 90) {
     const template = oldMessages[Math.floor(Math.random() * oldMessages.length)];
