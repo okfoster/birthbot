@@ -73,7 +73,7 @@ const characters = [
   { name: "Calix", fullName: "Calix Luciano", birthDate: "1979-10-29" },
   { name: "Cassandra", fullName: "Cassandra Nephthys", birthDate: "1985-10-31" },
   { name: "Artemisia", fullName: "Artemisia Maywood", birthDate: "2003-10-31" },
-  { name: "Jett & Spencer", fullName: "Jett & Spencer Van Damme", birthDate: "1949-10-31" },
+  { name: "Saifuk", fullName: "Saifuk Jaziri", birthDate: "1949-10-31" },
   { name: "Brindley", fullName: "Brindley Alegria-Audair-Whitlock", birthDate: "2025-10-31" },
   { name: "Dave", fullName: "Dave Faggetter", birthDate: "2011-11-11" },
   { name: "Inessa", fullName: "Inessa Solovyov", birthDate: "1992-11-11" },
