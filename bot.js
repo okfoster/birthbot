@@ -19,64 +19,96 @@ const monthNames = [
 
 // data
 const characters = [
+  { name: "Yuri", fullName: "Yuri Malkovich", birthDate: "2007-01-01" },
+  { name: "Amor", fullName: "Amor Fati", birthDate: "2007-01-01" },
+  { name: "Clementine", fullName: "Clementine Ixtal", birthDate: "2009-01-01" },
+  { name: "Hexe", fullName: "Hexe Zugasti", birthDate: "2011-01-01" },
   { name: "Cecilia", fullName: "Cecilia Wispon", birthDate: "2007-01-07" },
   { name: "Lupe", fullName: "Lupe Del Bosque Solis", birthDate: "2002-01-09" },
   { name: "Merc", fullName: "Mercury Makri", birthDate: "2007-01-12" },
+  { name: "Tristan", fullName: "Tristan Del Bosque Ixtal", birthDate: "2009-01-14" },
   { name: "Carlos", fullName: "Carlos Del Bosque Espinosa", birthDate: "1981-01-21" },
   { name: "Andreas", fullName: "Andreas Macado", birthDate: "2010-01-22" },
   { name: "Lex", fullName: "Lex Whitlock", birthDate: "2011-01-28" },
   { name: "Victor and Alexander", fullName: "Victor and Alexander Wispon", birthDate: "1980-01-30" },
   { name: "Gabriel", fullName: "Gabriel Maywood", birthDate: "1935-02-06" },
+  { name: "Maerwynn", fullName: "Maerwynn Wispon", birthDate: "2011-02-14" },
   { name: "Gladys", fullName: "Gladys Dewberry", birthDate: "1952-02-22" },
   { name: "Corentin", fullName: "Corentin Whitlock", birthDate: "1980-03-06" },
   { name: "Octivia & Leslie", fullName: "Octivia & Leslie D'Arques", birthDate: "1999-03-14" },
   { name: "Baubles", fullName: "Baubles", birthDate: "1989-03-16" },
   { name: "Kasper", fullName: "Kasper Vaughn", birthDate: "1999-04-05" },
-  { name: "The Large Scary Man", fullName: "The Large Scary Man", birthDate: "1959-04-18" },
+  { name: "Rosemary", fullName: "Rosemary Roseblade", birthDate: "2007-04-09" },
   { name: "Jett and Spencer", fullName: "Jett and Spencer Van Damme", birthDate: "2007-04-10" },
+  { name: "Boris and Lanolin", fullName: "Boris and Lanolin Lambrych", birthDate: "2008-04-13" },
+  { name: "The Large Scary Man", fullName: "The Large Scary Man", birthDate: "1959-04-18" },
   { name: "Kara", fullName: "Kara Kento", birthDate: "1999-04-30" },
+  { name: "Lotus", fullName: "Lotus Redtail", birthDate: "2011-05-01" },
   { name: "Sapphire", fullName: "Sapphire Laroche", birthDate: "2007-05-04" },
   { name: "Jude", fullName: "Jude Whitlock", birthDate: "2008-05-08" },
   { name: "Cyrille", fullName: "Cyrille Visage", birthDate: "1974-05-13" },
   { name: "Eiro", fullName: "Eiro Audair", birthDate: "2010-05-28" },
+  { name: "Lucian", fullName: "Lucian Ixtal", birthDate: "1986-06-01" },
+  { name: "Ophelia", fullName: "Ophelia DiPietra", birthDate: "2007-06-09" },
+  { name: "Lancel", fullName: "Lancel Alegria", birthDate: "2000-06-21" },
   { name: "Angela", fullName: "Angela Del Bosque Ixtal", birthDate: "2016-06-24" },
+  { name: "CJ", fullName: "CJ Doe", birthDate: "1998-06-25" },
   { name: "Cinder and Sage", fullName: "Cinder and Sage Whitlock", birthDate: "2016-06-30" },
   { name: "Maribelle", fullName: "Maribelle Orpheus", birthDate: "1985-07-05" },
   { name: "Nova", fullName: "Nova Sonastar", birthDate: "2007-07-08" },
   { name: "Scythian", fullName: "Scythian Igenmorgenschweissenmann", birthDate: "1986-07-19" },
+  { name: "Tora", fullName: "Tora Maestri", birthDate: "2009-07-31" },
   { name: "Isla", fullName: "Isla Wispon", birthDate: "1981-07-31" },
+  { name: "Judis", fullName: "Judis Ixtal", birthDate: "1989-08-01" },
   { name: "Avongara", fullName: "Avongara Signoria", birthDate: "1971-08-08" },
   { name: "Sennett Reue", fullName: "Headmaster Sennett Reue", birthDate: "1940-08-13" },
   { name: "Astrillia Wispon", fullName: "Astrillia Wispon", birthDate: "1924-08-21" },
   { name: "Sorin", fullName: "Sorin Valdis", birthDate: "1993-08-30" },
+  { name: "Cassie", fullName: "Cassiopeia Heliotrope", birthDate: "2008-08-30" },
   { name: "Graham", fullName: "Graham Wispon", birthDate: "2008-09-02" },
   { name: "Barley", fullName: "Barley Carley", birthDate: "2006-09-30" },
+  { name: "Lucius and Yvaine", fullName: "Lucius Regens von Caelum-Alegria and Yvaine von Caelum", birthDate: "1984-10-14" },
   { name: "Calix", fullName: "Calix Luciano", birthDate: "1979-10-29" },
+  { name: "Cassandra", fullName: "Cassandra Nephthys", birthDate: "1985-10-31" },
+  { name: "Artemisia", fullName: "Artemisia Maywood", birthDate: "2003-10-31" },
+  { name: "Jett and Spencer", fullName: "Jett and Spencer Van Damme", birthDate: "1949-10-31" },
   { name: "Brindley", fullName: "Brindley Alegria-Audair-Whitlock", birthDate: "2025-10-31" },
+  { name: "Dave", fullName: "Dave Faggetter", birthDate: "2011-11-11" },
+  { name: "Inessa", fullName: "Inessa Solovyov", birthDate: "1992-11-11" },
   { name: "Bastian", fullName: "Bastian Audair", birthDate: "2006-11-12" },
   { name: "Circe", fullName: "Circe Nazaretian", birthDate: "2001-11-12" },
   { name: "Layna", fullName: "Layna Wispon", birthDate: "2025-11-13" },
   { name: "Vendetta", fullName: "Vendetta Sekmeht Sabretooth Van Damme-Deathbringer-Johnson", birthDate: "1978-11-13" },
   { name: "Eden", fullName: "Eden Maywood", birthDate: "2008-12-01" },
+  { name: "Florence and Laurence", fullName: "Florence and Laurence Ixtal", birthDate: "2007-12-04" },
+  { name: "Angelina", fullName: "Angelina Malkovich", birthDate: "1983-12-05" },
   { name: "Bandit", fullName: "Bandit Van Damme", birthDate: "2010-12-08" },
+  { name: "Viola", fullName: "Viola Whitlock", birthDate: "2008-12-11" },
   { name: "Avery", fullName: "Avery Whitlock", birthDate: "1979-12-14" },
   { name: "Tove", fullName: "Tovenaar Barlowe", birthDate: "1878-12-20" },
+  { name: "Aisosa", fullName: "Aisosa Mokwena", birthDate: "1968-12-27" },
+  { name: "Wisteria, Freyja and Vesper", fullName: "Wisteria, Freyja and Vesper Roseblade", birthDate: "1968-12-28" },
 ];
 
 const deadCharacters = [
   { name: "Roxie Brindley", fullName: "Roxie Brindley", birthDate: "1947-01-20" },
   { name: "Solara", fullName: "Solara Mercia-Angevin", birthDate: "1922-02-28" },
+  { name: "Belladonna", fullName: "Belladonna Alegria", birthDate: "1985-03-23" },
   { name: "Hayes", fullName: "Hayes Octavius", birthDate: "1902-03-24" },
+  { name: "Callum", fullName: "Callum Faewulfe", birthDate: "1700-04-11" },
   { name: "Sung-ki", fullName: "Mok Sung-ki", birthDate: "1854-05-21" },
   { name: "Taraji", fullName: "Taraji", birthDate: "1856-07-29" },
   { name: "Clement", fullName: "Clement Maywood", birthDate: "1582-08-02" },
   { name: "Magni", fullName: "Magni Macado", birthDate: "1965-08-18" },
+  { name: "Atticus", fullName: "Atticus Wispon", birthDate: "1873-08-24" },
+  { name: "Clarissa", fullName: "Clarissa Maywood", birthDate: "1915-09-28" },
   { name: "Althea", fullName: "Althea Rosgaard", birthDate: "1963-11-08" },
   { name: "Aguri", fullName: "Aguri Swordsinger", birthDate: "1597-11-19" },
+  { name: "Euphemia", fullName: "Euphemia Roseblade", birthDate: "1652-12-10" },
 ];
 
 const npcHellCharacters = [
-
+  { name: "MINERVA", fullName: "Minerva Wispon", birthDate: "1853-08-24", deathDate: "1953-08-25" },
 ];
 
 // message templates
@@ -129,7 +161,7 @@ function getBirthdayMessage(character) {
   if (character.name === "Brindley") {
     return `Happy adoption day, **Brindley!**\n**Brindley Alegria-Audair-Whitlock** was adopted 10/31/2025.`;
   }
-if (character.name === "Isla" || character.name === "Bastian") {
+if (character.name === "Isla" || character.name === "Bastian" || character.name === "Lucian") {
     return `Unfortunately, **${character.fullName}** is still alive.\n\n**${character.fullName}** was born on ${character.birthDate} and is turning ${age} today.`;
 }
   
@@ -200,7 +232,7 @@ function sendTodaysBirthdays(channel) {
     }
   });
 
-  // Only send if there are birthdays today
+  // only send if there are birthdays today
   messagesToSend.forEach(msg => channel.send(msg));
 }
 
@@ -283,7 +315,7 @@ client.on("messageCreate", message => {
   const msg = message.content.toLowerCase();
 
   // !hello
-  if (msg === "!hello") return message.reply("What up fam");
+  if (msg === "!hello") return message.reply("what up fam");
 
   // !happybirthday
   if (msg === "!happybirthday") {
