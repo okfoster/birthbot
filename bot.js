@@ -28,7 +28,7 @@ const characters = [
   { name: "Victor and Alexander", fullName: "Victor and Alexander Wispon", birthDate: "1980-01-30" },
   { name: "Gabriel", fullName: "Gabriel Maywood", birthDate: "1935-02-06" },
   { name: "Gladys", fullName: "Gladys Dewberry", birthDate: "1952-02-22" },
-  { name: "Corentin", fullName: "Corentin Whitlock", birthDate: "1980-03-06" },
+  { name: "Corentin", fullName: "Corentin Whitlock", birthDate: "1980-03-07" },
   { name: "Octivia & Leslie", fullName: "Octivia & Leslie D'Arques", birthDate: "1989-03-16" },
   { name: "Baubles", fullName: "Baubles", birthDate: "1989-03-16" },
   { name: "Kasper", fullName: "Kasper Vaughn", birthDate: "1999-04-05" },
