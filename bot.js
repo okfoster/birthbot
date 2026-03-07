@@ -129,9 +129,9 @@ function getBirthdayMessage(character) {
   if (character.name === "Brindley") {
     return `Happy adoption day, **Brindley!**\n**Brindley Alegria-Audair-Whitlock** was adopted 10/31/2025.`;
   }
-  if (character.name === "Isla", "Bastian") {
+if (character.name === "Isla" || character.name === "Bastian") {
     return `Unfortunately, **${character.fullName}** is still alive.\n\n**${character.fullName}** was born on ${character.birthDate} and is turning ${age} today.`;
-  }
+}
   
   // twins
   const verb = character.name.includes("and") ? "were" : "was";
