@@ -142,45 +142,48 @@ function sendTodaysBirthdays(channel) {
 
   const messagesToSend = [];
 
-  // normal
+  // Normal characters
   characters.forEach(c => {
     const [y,m,d] = c.birthDate.split("-").map(Number);
-    if (m === month && d === day) messagesToSend.push(getBirthdayMessage(c));
+    if (m === month && d === day) {
+      messagesToSend.push(getBirthdayMessage(c));
+    }
   });
 
-  // dead characters
+  // Dead characters
   deadCharacters.forEach(c => {
     const [y,m,d] = c.birthDate.split("-").map(Number);
     if (m === month && d === day) {
       const age = today.getFullYear() - y;
       const ageOrdinal = getOrdinal(age);
-      let template = y > 1916 
+      const template = y > 1916 
         ? deadMessagesPost1916[Math.floor(Math.random() * deadMessagesPost1916.length)]
         : deadMessagesPre1916[Math.floor(Math.random() * deadMessagesPre1916.length)];
-      messagesToSend.push(template.replace(/{name}/g, c.name)
-                                  .replace(/{fullName}/g, c.fullName)
-                                  .replace(/{birthDate}/g, c.birthDate)
-                                  .replace(/{age}/g, age)
-                                  .replace(/{ageOrdinal}/g, ageOrdinal));
-    }
-  });
-
-  // NPC Hell
-  npcHellCharacters.forEach(c => {
-    const [y,m,d] = c.birthDate.split("-").map(Number);
-    if (m === month && d === day) {
-      const template = npcHellMessages[Math.floor(Math.random() * npcHellMessages.length)];
-      messagesToSend.push(template.replace(/{fullName}/g, c.fullName)
-                                  .replace(/{birthDate}/g, c.birthDate)
-                                  .replace(/{deathDate}/g, c.deathDate));
+      messagesToSend.push(
+        template.replace(/{name}/g, c.name)
+                .replace(/{fullName}/g, c.fullName)
+                .replace(/{birthDate}/g, c.birthDate)
+                .replace(/{age}/g, age)
+                .replace(/{ageOrdinal}/g, ageOrdinal)
       );
     }
   });
 
-  // Send messages if there are any
-  if (messagesToSend.length > 0) {
-    messagesToSend.forEach(msg => channel.send(msg));
-  }
+  // NPC Hell characters
+  npcHellCharacters.forEach(c => {
+    const [y,m,d] = c.birthDate.split("-").map(Number);
+    if (m === month && d === day) {
+      const template = npcHellMessages[Math.floor(Math.random() * npcHellMessages.length)];
+      messagesToSend.push(
+        template.replace(/{fullName}/g, c.fullName)
+                .replace(/{birthDate}/g, c.birthDate)
+                .replace(/{deathDate}/g, c.deathDate)
+      );
+    }
+  });
+
+  // Only send if there are birthdays today
+  messagesToSend.forEach(msg => channel.send(msg));
 }
 
 // monthly birthdays
@@ -286,7 +289,7 @@ if (msg.startsWith("!birthday")) {
     deadCharacters.find(c => c.fullName.replace(/\s+/g,"").toLowerCase() === queryName) ||
     npcHellCharacters.find(c => c.fullName.replace(/\s+/g,"").toLowerCase() === queryName);
 
-  if (!char) return message.reply(`⚠️ Couldn't find character "${queryName}"`);
+  if (!char) return message.reply(`⚠️ boy who the hell is "${queryName}"`);
 
   const [y,m,d] = char.birthDate.split("-").map(Number);
 
