@@ -235,23 +235,58 @@ function sendBirthday(channel, text) {
 client.on("messageCreate", message => {
   if (!message.guild) return; // ignore DMs
   if (message.author.bot) return; // ignore self
-  
-  const msg = message.content.toLowerCase();
 
+  const msg = message.content.toLowerCase().trim();
   const allChars = [...characters, ...deadCharacters, ...npcHellCharacters];
 
   // ---- !commandsplease ----
   if (msg === "!commandsplease") {
-    return message.reply(`
-!birthday (character)
-!age (character)
-!countdown (character)
-!checkbirthdays
-!check(month)birthdays
-!happybirthday (character)
-!itsmybirthday
-!funfact
-`);
+    message.reply(`
+!birthday(Firstname Lastname) -- returns a character's birthday
+!age(Firstname Lastname) -- returns a character's age
+!countdown(Firstname Lastname) -- returns how many days until a character's birthday
+!birthdaylist -- returns birthday list
+!check(month)birthdays -- returns birthdays for that month
+!happybirthday(Firstname Lastname) -- wishes a character a happy birthday regardless of if it is actually their birthday
+!itsmybirthday -- @s everyone and wishes you a happy birthday
+!funfact -- fun birthbot facts
+    `);
+    return;
+  }
+
+  // ---- !birthdaylist (all characters, sorted by age) ----
+  if (msg === "!birthdaylist") {
+    const today = new Date();
+    allChars.forEach(c => {
+      const birth = new Date(c.birthDate);
+      let age = today.getFullYear() - birth.getFullYear();
+      const m = today.getMonth() - birth.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+      c._calculatedAge = age;
+    });
+
+    // sort by age ascending (youngest → oldest)
+    allChars.sort((a, b) => a._calculatedAge - b._calculatedAge);
+
+    // create formatted list
+    const birthdayList = allChars.map(char => {
+      const birthDateFormatted = formatDate(char.birthDate);
+      return `${char.fullName} (born ${birthDateFormatted})`;
+    });
+
+    // split into multiple messages if too long
+    const maxLength = 2000;
+    let messageChunk = "";
+    birthdayList.forEach(line => {
+      if ((messageChunk + "\n" + line).length > maxLength) {
+        message.channel.send(messageChunk);
+        messageChunk = line;
+      } else {
+        messageChunk += (messageChunk ? "\n" : "") + line;
+      }
+    });
+    if (messageChunk) message.channel.send(messageChunk);
+    return;
   }
 
   // ---- !age (character) ----
@@ -259,7 +294,8 @@ client.on("messageCreate", message => {
     const name = message.content.slice(4).trim().toLowerCase();
     const char = allChars.find(c => c.fullName.toLowerCase() === name);
     if (!char) return message.reply(`⚠️ boy who the hell is "${name}"`);
-    return message.reply(`${char.fullName} is ${getAge(char)} years old.`);
+    message.reply(`${char.fullName} is ${getAge(char)} years old.`);
+    return;
   }
 
   // ---- !countdown (character) ----
@@ -268,9 +304,10 @@ client.on("messageCreate", message => {
     const char = allChars.find(c => c.fullName.toLowerCase() === name);
     if (!char) return message.reply(`⚠️ boy who the hell is "${name}"`);
     const ageNext = getAge(char) + 1;
-    return message.reply(
+    message.reply(
       `There are ${daysUntilBirthday(char)} days until ${char.name}'s ${getOrdinal(ageNext)} birthday on ${formatDate(char.birthDate)}!`
     );
+    return;
   }
 
   // ---- !birthday (character) ----
@@ -307,25 +344,27 @@ client.on("messageCreate", message => {
         .replace(/{name}/g, char.name);
     }
 
-    return sendBirthday(message.channel, msgToSend);
+    sendBirthday(message.channel, msgToSend);
+    return;
   }
 
   // ---- !happybirthday (character) ----
   if (msg.startsWith("!happybirthday")) {
     const name = message.content.slice(14).trim();
     if (!name) return message.reply(`⚠️ boy who the hell is "${name}"`);
-    return sendBirthday(message.channel, `# 🎂 Happy birthday, ${name}!`);
+    sendBirthday(message.channel, `# 🎂 Happy birthday, ${name}!`);
+    return;
   }
 
   // ---- !itsmybirthday ----
   if (msg === "!itsmybirthday") {
-    return message.channel.send(`@everyone
+    message.channel.send(`@everyone
 # EVERYONE SHUT THE FUCK UP IT'S ${message.author}'S BIRTHDAY!!!! HAPPY BIRTHDAY!!!!!!!!`);
+    return;
   }
 
   // ---- !funfact ----
   if (msg === "!funfact") {
-    // average birthday
     let totalDay = 0;
     allChars.forEach(c => {
       const d = new Date(c.birthDate);
@@ -336,7 +375,6 @@ client.on("messageCreate", message => {
     avgDate.setDate(avgDay);
     const averageBirthday = `The average birthday of these characters is ${monthNames[avgDate.getMonth()]} ${getOrdinal(avgDate.getDate())}.`;
 
-    // average age
     let totalAge = 0;
     allChars.forEach(c => { totalAge += getAge(c); });
     const avgAge = Math.round(totalAge / allChars.length);
@@ -362,52 +400,19 @@ client.on("messageCreate", message => {
       "Programming this bot took 7 hours of nonstop work and 2 red bulls. My back hurt very bad afterwards. Worth it though."
     ];
 
-    return message.reply(facts[Math.floor(Math.random() * facts.length)]);
+    message.reply(facts[Math.floor(Math.random() * facts.length)]);
+    return;
   }
 
   // ---- !check(month)birthdays (specific month) ----
-if (msg.startsWith("!check") && msg.endsWith("birthdays")) {
-  const monthName = msg.slice(6, -9).trim(); // extract month
-  if (!monthName) return; // if nothing between, ignore
-  const monthIndex = monthNames.findIndex(m => m.toLowerCase() === monthName.toLowerCase());
-  if (monthIndex === -1) return message.reply("⚠️ that's not a month");
-  return sendMonthlyBirthdays(monthIndex, message.channel);
-}
-
-  // ---- !checkbirthdays (all characters, sorted by age) ----
-  if (msg === "!checkbirthdays") {
-    const today = new Date();
-    allChars.forEach(c => {
-      const birth = new Date(c.birthDate);
-      let age = today.getFullYear() - birth.getFullYear();
-      const m = today.getMonth() - birth.getMonth();
-      if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
-      c._calculatedAge = age;
-    });
-
-    // sort by age ascending (youngest → oldest)
-    allChars.sort((a, b) => a._calculatedAge - b._calculatedAge);
-
-    // create formatted list
-    const birthdayList = allChars.map(char => {
-      const birthDateFormatted = formatDate(char.birthDate);
-      return `${char.fullName} (born ${birthDateFormatted})`;
-    });
-
-    // split into multiple messages if too long
-    const maxLength = 2000;
-    let messageChunk = "";
-    birthdayList.forEach(line => {
-      if ((messageChunk + "\n" + line).length > maxLength) {
-        message.channel.send(messageChunk);
-        messageChunk = line;
-      } else {
-        messageChunk += (messageChunk ? "\n" : "") + line;
-      }
-    });
-    if (messageChunk) message.channel.send(messageChunk);
+  if (msg.startsWith("!check") && msg.endsWith("birthdays")) {
+    const monthName = msg.slice("!check".length, -9).trim(); // safer slicing
+    if (!monthName) return; // ignore if empty
+    const monthIndex = monthNames.findIndex(m => m.toLowerCase() === monthName.toLowerCase());
+    if (monthIndex === -1) return message.reply("⚠️ that's not a month");
+    sendMonthlyBirthdays(monthIndex, message.channel);
+    return;
   }
-
 });
 
 // - scheduled tasks -
