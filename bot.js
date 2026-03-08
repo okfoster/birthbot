@@ -256,16 +256,16 @@ if (char.name === "Bastian" || char.name === "Isla") {
 
   msgToSend = `# Unfortunately, ${char.fullName} is still alive.
 
-${char.fullName} was born on ${birthDateFormatted} and is turning ${age} today.`;
+**${char.fullName}** was born on ${birthDateFormatted} and is turning ${age} today.`;
 
 } else if (char.name === "Brindley" || char.name === "Dusty") {
 
   const years = age;
   const plural = years === 1 ? "" : "s";
 
-  msgToSend = `Happy adoption day, ${char.name}!
+  msgToSend = `# Happy adoption day, ${char.name}!
 
-${char.fullName} was adopted ${years} year${plural} ago on ${birthDateFormatted}`;
+**${char.fullName}** was adopted ${years} year${plural} ago on ${birthDateFormatted}`;
 
 } else if (npcHellCharacters.some(c => c.fullName === char.fullName)) {
 
