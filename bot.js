@@ -392,7 +392,7 @@ if (msg.startsWith("!birthday")) {
   
   // TEST COMMANDS
   
-  // ---- !testFirstnameLastname ----
+// ---- !testFirstnameLastname ----
 if (msg.startsWith("!test")) {
   const name = message.content.slice(5).trim().toLowerCase();
   const char = allChars.find(c => c.fullName.toLowerCase() === name || c.name.toLowerCase() === name);
@@ -426,31 +426,26 @@ if (msg.startsWith("!test")) {
       .replace(/{name}/g, char.name);
   }
 
-  message.reply(`**Test birthday message for ${char.fullName}:**\n${msgToSend}`);
+  sendBirthday(message.channel, msgToSend);
   return;
 }
 
 // ---- !assumeMM-DD ----
 if (msg.startsWith("!assume")) {
-  const datePart = message.content.slice(7).trim(); // e.g., "3-14"
-  const [monthStr, dayStr] = datePart.split("-").map(s => parseInt(s, 10));
-  if (!monthStr || !dayStr || isNaN(monthStr) || isNaN(dayStr) || monthStr < 1 || monthStr > 12 || dayStr < 1 || dayStr > 31) {
-    return message.reply("⚠️ please use valid format: !assumeMM-DD (e.g. !assume3-14)");
-  }
+  const dateStr = message.content.slice(7).trim(); // e.g. "3-14"
+  const [monthNum, dayNum] = dateStr.split("-").map(Number);
+  if (!monthNum || !dayNum) return message.reply("⚠️ invalid date format. Use !assumeMM-DD");
 
-  const testDate = new Date();
-  testDate.setMonth(monthStr - 1);
-  testDate.setDate(dayStr);
-  testDate.setHours(9, 0, 0, 0); // assume 9 AM
+  const today = new Date();
+  const simulatedDate = new Date(today.getFullYear(), monthNum - 1, dayNum, 9, 0, 0);
+  
+  // simulate birthdays at 9 AM on that day
+  const allCharsSim = [...characters, ...deadCharacters, ...npcHellCharacters];
 
-  const today = testDate;
-  const allChars = [...characters, ...deadCharacters, ...npcHellCharacters];
-  let messages = [];
-
-  allChars.forEach(char => {
+  allCharsSim.forEach(char => {
     const [y, m, d] = char.birthDate.split("-").map(Number);
-    if (m === today.getMonth() + 1 && d === today.getDate()) {
-      const age = getAge(char);
+    if (m === monthNum && d === dayNum) {
+      const age = simulatedDate.getFullYear() - y;
       const birthDateFormatted = formatDate(char.birthDate);
       const deathDateFormatted = char.deathDate ? formatDate(char.deathDate) : "???";
 
@@ -478,12 +473,10 @@ if (msg.startsWith("!assume")) {
           .replace(/{name}/g, char.name);
       }
 
-      messages.push(msgToSend);
+      sendBirthday(message.channel, msgToSend);
     }
   });
 
-  if (messages.length === 0) return message.reply("No birthdays on this date.");
-  messages.forEach(m => message.reply(`**Simulated 9 AM birthday message:**\n${m}`));
   return;
 }
 });
