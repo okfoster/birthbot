@@ -389,6 +389,103 @@ if (msg.startsWith("!birthday")) {
     sendMonthlyBirthdays(monthIndex, message.channel);
     return;
   }
+  
+  // TEST COMMANDS
+  
+  // ---- !testFirstnameLastname ----
+if (msg.startsWith("!test")) {
+  const name = message.content.slice(5).trim().toLowerCase();
+  const char = allChars.find(c => c.fullName.toLowerCase() === name || c.name.toLowerCase() === name);
+  if (!char) return message.reply(`⚠️ boy who the hell is "${name}"`);
+
+  const age = getAge(char);
+  const birthDateFormatted = formatDate(char.birthDate);
+  const deathDateFormatted = char.deathDate ? formatDate(char.deathDate) : "???";
+
+  let msgToSend = "";
+
+  if (npcHellCharacters.includes(char)) {
+    msgToSend = npcHellMessages[0]
+      .replace(/{fullName}/g, char.fullName)
+      .replace(/{birthDate}/g, birthDateFormatted)
+      .replace(/{deathDate}/g, deathDateFormatted);
+  } else if (deadCharacters.includes(char)) {
+    msgToSend = deadMessagesPost1916[0]
+      .replace(/{fullName}/g, char.fullName)
+      .replace(/{birthDate}/g, birthDateFormatted)
+      .replace(/{deathDate}/g, deathDateFormatted)
+      .replace(/{age}/g, age)
+      .replace(/{name}/g, char.name)
+      .replace(/{ageOrdinal}/g, getOrdinal(age));
+  } else {
+    const template = normalMessages[Math.floor(Math.random() * normalMessages.length)];
+    msgToSend = template
+      .replace(/{fullName}/g, char.fullName)
+      .replace(/{birthDate}/g, birthDateFormatted)
+      .replace(/{age}/g, age)
+      .replace(/{name}/g, char.name);
+  }
+
+  message.reply(`**Test birthday message for ${char.fullName}:**\n${msgToSend}`);
+  return;
+}
+
+// ---- !assumeMM-DD ----
+if (msg.startsWith("!assume")) {
+  const datePart = message.content.slice(7).trim(); // e.g., "3-14"
+  const [monthStr, dayStr] = datePart.split("-").map(s => parseInt(s, 10));
+  if (!monthStr || !dayStr || isNaN(monthStr) || isNaN(dayStr) || monthStr < 1 || monthStr > 12 || dayStr < 1 || dayStr > 31) {
+    return message.reply("⚠️ please use valid format: !assumeMM-DD (e.g. !assume3-14)");
+  }
+
+  const testDate = new Date();
+  testDate.setMonth(monthStr - 1);
+  testDate.setDate(dayStr);
+  testDate.setHours(9, 0, 0, 0); // assume 9 AM
+
+  const today = testDate;
+  const allChars = [...characters, ...deadCharacters, ...npcHellCharacters];
+  let messages = [];
+
+  allChars.forEach(char => {
+    const [y, m, d] = char.birthDate.split("-").map(Number);
+    if (m === today.getMonth() + 1 && d === today.getDate()) {
+      const age = getAge(char);
+      const birthDateFormatted = formatDate(char.birthDate);
+      const deathDateFormatted = char.deathDate ? formatDate(char.deathDate) : "???";
+
+      let msgToSend = "";
+
+      if (npcHellCharacters.includes(char)) {
+        msgToSend = npcHellMessages[0]
+          .replace(/{fullName}/g, char.fullName)
+          .replace(/{birthDate}/g, birthDateFormatted)
+          .replace(/{deathDate}/g, deathDateFormatted);
+      } else if (deadCharacters.includes(char)) {
+        msgToSend = deadMessagesPost1916[0]
+          .replace(/{fullName}/g, char.fullName)
+          .replace(/{birthDate}/g, birthDateFormatted)
+          .replace(/{deathDate}/g, deathDateFormatted)
+          .replace(/{age}/g, age)
+          .replace(/{name}/g, char.name)
+          .replace(/{ageOrdinal}/g, getOrdinal(age));
+      } else {
+        const template = normalMessages[Math.floor(Math.random() * normalMessages.length)];
+        msgToSend = template
+          .replace(/{fullName}/g, char.fullName)
+          .replace(/{birthDate}/g, birthDateFormatted)
+          .replace(/{age}/g, age)
+          .replace(/{name}/g, char.name);
+      }
+
+      messages.push(msgToSend);
+    }
+  });
+
+  if (messages.length === 0) return message.reply("No birthdays on this date.");
+  messages.forEach(m => message.reply(`**Simulated 9 AM birthday message:**\n${m}`));
+  return;
+}
 });
 
 // - scheduled tasks -
