@@ -378,41 +378,46 @@ client.on("messageCreate", message => {
 
 });
 
-// - daily/monthly birthday functions -
 function sendTodaysBirthdays(channel) {
   const today = new Date();
   const month = today.getMonth() + 1;
   const day = today.getDate();
 
-  const messagesToSend = [];
+  const allChars = [...characters, ...deadCharacters, ...npcHellCharacters];
 
-  // normal characters
-  characters.forEach(c => {
-    const [y, m, d] = c.birthDate.split("-").map(Number);
+  allChars.forEach(char => {
+    const [y, m, d] = char.birthDate.split("-").map(Number);
     if (m === month && d === day) {
-      const age = getAge(c);
-      messagesToSend.push(`# HAPPY BIRTHDAY **${c.name}!!!!!!**\n\n**${c.fullName}** was born ${formatDate(c.birthDate)} and is turning ${age} today!`);
+      const age = getAge(char);
+      const birthDateFormatted = formatDate(char.birthDate);
+      const deathDateFormatted = char.deathDate ? formatDate(char.deathDate) : "???";
+      let msgToSend = "";
+
+      if (npcHellCharacters.includes(char)) {
+        msgToSend = npcHellMessages[0]
+          .replace(/{fullName}/g, char.fullName)
+          .replace(/{birthDate}/g, birthDateFormatted)
+          .replace(/{deathDate}/g, deathDateFormatted);
+      } else if (deadCharacters.includes(char)) {
+        msgToSend = deadMessagesPost1916[0]
+          .replace(/{fullName}/g, char.fullName)
+          .replace(/{birthDate}/g, birthDateFormatted)
+          .replace(/{deathDate}/g, deathDateFormatted)
+          .replace(/{age}/g, age)
+          .replace(/{name}/g, char.name)
+          .replace(/{ageOrdinal}/g, getOrdinal(age));
+      } else {
+        const template = normalMessages[Math.floor(Math.random() * normalMessages.length)];
+        msgToSend = template
+          .replace(/{fullName}/g, char.fullName)
+          .replace(/{birthDate}/g, birthDateFormatted)
+          .replace(/{age}/g, age)
+          .replace(/{name}/g, char.name);
+      }
+
+      channel.send(msgToSend).then(m => reactBirthday(m));
     }
   });
-
-  // dead characters
-  deadCharacters.forEach(c => {
-    const [y, m, d] = c.birthDate.split("-").map(Number);
-    if (m === month && d === day) {
-      const age = today.getFullYear() - y;
-      messagesToSend.push(`# Happy heavenly birthday, ${c.fullName}.\n\n**${c.fullName}** was born ${formatDate(c.birthDate)} and died ${formatDate(c.deathDate)}. They would be ${age} today.`);
-    }
-  });
-
-  // NPC hell
-  npcHellCharacters.forEach(c => {
-    const [y, m, d] = c.birthDate.split("-").map(Number);
-    if (m === month && d === day) {
-      messagesToSend.push(`# THEY DON'T CELEBRATE BIRTHDAYS IN NPC HELL, ${c.fullName} 🔥🔥🔥🔥🔥🔥\n\n**${c.fullName}** was born ${formatDate(c.birthDate)} and died ${formatDate(c.deathDate)}.`);
-    }
-  });
-
-  messagesToSend.forEach(msg => channel.send(msg).then(m => reactBirthday(m)));
 }
 
 function sendTodaysBirthdaysToAllGuilds() {
