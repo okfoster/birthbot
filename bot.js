@@ -216,6 +216,10 @@ function formatDate(dateString) {
   return `${monthNames[d.getMonth()]} ${getOrdinal(d.getDate())}, ${d.getFullYear()}`;
 }
 
+function isPluralCharacter(char){
+  return char.fullName.includes("&");
+}
+
 function daysUntilBirthday(character) {
   const today = new Date();
   const birth = new Date(character.birthDate);
@@ -248,6 +252,10 @@ function sendBirthdaysWithGrouping(channel, chars, simulatedDate = null) {
     const age = today.getFullYear() - birth.getFullYear();
     const birthDateFormatted = formatDate(char.birthDate);
     const deathDateFormatted = char.deathDate ? formatDate(char.deathDate) : "???";
+	
+	const plural = isPluralCharacter(char);
+    const wasWere = plural ? "were" : "was";
+    const isAre = plural ? "are" : "is";
 
     let msgToSend = "";
 
@@ -286,12 +294,19 @@ if (char.name === "Bastian" || char.name === "Isla") {
 
 } else {
 
+  const plural = char.fullName.includes("&");
+  const wasWere = plural ? "were" : "was";
+  const isAre = plural ? "are" : "is";
+
   const template = normalMessages[Math.floor(Math.random() * normalMessages.length)];
+
   msgToSend = template
     .replace(/{fullName}/g, char.fullName)
     .replace(/{birthDate}/g, birthDateFormatted)
     .replace(/{age}/g, age)
-    .replace(/{name}/g, char.name);
+    .replace(/{name}/g, char.name)
+    .replace("was born", `${wasWere} born`)
+    .replace("is turning", `${isAre} turning`);
 
 }
 sendBirthday(channel, groupHeader + msgToSend);
@@ -525,41 +540,16 @@ function sendTodaysBirthdaysToAllGuilds() {
            c.name.toLowerCase() === "⋆˚☾⭒˚・birthdays" &&
            c.permissionsFor(guild.members.me).has(PermissionsBitField.Flags.SendMessages)
     );
+
     if (ch) {
-      allChars.forEach(char => {
+
+      const birthdayChars = allChars.filter(char => {
         const [y, m, d] = char.birthDate.split("-").map(Number);
-        if (m === today.getMonth() + 1 && d === today.getDate()) {
-          const age = getAge(char);
-          const birthDateFormatted = formatDate(char.birthDate);
-          const deathDateFormatted = char.deathDate ? formatDate(char.deathDate) : "???";
-
-          let msgToSend = "";
-
-          if (npcHellCharacters.includes(char)) {
-            msgToSend = npcHellMessages[0]
-              .replace(/{fullName}/g, char.fullName)
-              .replace(/{birthDate}/g, birthDateFormatted)
-              .replace(/{deathDate}/g, deathDateFormatted);
-          } else if (deadCharacters.includes(char)) {
-            msgToSend = deadMessagesPost1916[0]
-              .replace(/{fullName}/g, char.fullName)
-              .replace(/{birthDate}/g, birthDateFormatted)
-              .replace(/{deathDate}/g, deathDateFormatted)
-              .replace(/{age}/g, age)
-              .replace(/{name}/g, char.name)
-              .replace(/{ageOrdinal}/g, getOrdinal(age));
-          } else {
-            const template = normalMessages[Math.floor(Math.random() * normalMessages.length)];
-            msgToSend = template
-              .replace(/{fullName}/g, char.fullName)
-              .replace(/{birthDate}/g, birthDateFormatted)
-              .replace(/{age}/g, age)
-              .replace(/{name}/g, char.name);
-          }
-
-          sendBirthday(ch, msgToSend);
-        }
+        return m === today.getMonth() + 1 && d === today.getDate();
       });
+
+      sendBirthdaysWithGrouping(ch, birthdayChars, today);
+
     }
   });
 }
