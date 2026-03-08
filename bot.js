@@ -114,6 +114,7 @@ const characters = [
   { name:"Bastian",fullName:"Bastian Audair",birthDate:"2006-11-12"},
   { name:"Circe",fullName:"Circe Nazaretian",birthDate:"2001-11-12"},
   { name:"Layna",fullName:"Layna Wispon",birthDate:"2025-11-13"},
+  { name:"Dusty",fullName:"Dusty Whitlock",birthDate:"1995-11-20"},
   { name:"Vendetta",fullName:"Vendetta Sekmeht Sabretooth Van Damme-Deathbringer-Johnson",birthDate:"1978-11-30"},
   { name:"Eden",fullName:"Eden Maywood",birthDate:"2008-12-01"},
   { name:"Florence & Laurence",fullName:"Florence & Laurence Ixtal",birthDate:"2007-12-04"},
@@ -236,7 +237,6 @@ function sendBirthdaysWithGrouping(channel, chars, simulatedDate = null) {
 
   const today = simulatedDate || new Date();
 
-  // Count how many characters share this birthday (exclude literal "Name & Name" combos)
   const nonComboChars = chars.filter(c => !c.fullName.includes("&"));
   let groupHeader = "";
   if (nonComboChars.length === 2) groupHeader = "# BIRTHDAY TWINS!!\n\n";
@@ -249,6 +249,22 @@ function sendBirthdaysWithGrouping(channel, chars, simulatedDate = null) {
     const deathDateFormatted = char.deathDate ? formatDate(char.deathDate) : "???";
 
     let msgToSend = "";
+
+// special
+if (char.name === "Bastian" || char.name === "Isla") {
+  msgToSend = `# Unfortunately, ${char.fullName} is still alive.
+
+${char.fullName} was born on ${birthDateFormatted} and is turning ${age} today.`;
+
+} else if (char.name === "Brindley" || char.name === "Dusty") {
+  const years = age;
+  const plural = years === 1 ? "" : "s";
+
+  msgToSend = `Happy adoption day, ${char.name}!
+
+${char.fullName} was adopted ${years} year${plural} ago on ${birthDateFormatted}`;
+
+} else if (npcHellCharacters.includes(char)) {
 
     if (npcHellCharacters.includes(char)) {
       msgToSend = npcHellMessages[0]
