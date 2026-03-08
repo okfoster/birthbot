@@ -244,7 +244,8 @@ function sendBirthdaysWithGrouping(channel, chars, simulatedDate = null) {
   if (nonComboChars.length === 4) groupHeader = "# BIRTHDAY QUADRUPLETS!!!!\n\n";
 
   chars.forEach(char => {
-    const age = today.getFullYear() - new Date(char.birthDate).getFullYear();
+    const birth = new Date(char.birthDate);
+    const age = today.getFullYear() - birth.getFullYear();
     const birthDateFormatted = formatDate(char.birthDate);
     const deathDateFormatted = char.deathDate ? formatDate(char.deathDate) : "???";
 
@@ -252,11 +253,13 @@ function sendBirthdaysWithGrouping(channel, chars, simulatedDate = null) {
 
 // special
 if (char.name === "Bastian" || char.name === "Isla") {
+
   msgToSend = `# Unfortunately, ${char.fullName} is still alive.
 
 ${char.fullName} was born on ${birthDateFormatted} and is turning ${age} today.`;
 
 } else if (char.name === "Brindley" || char.name === "Dusty") {
+
   const years = age;
   const plural = years === 1 ? "" : "s";
 
@@ -264,34 +267,38 @@ ${char.fullName} was born on ${birthDateFormatted} and is turning ${age} today.`
 
 ${char.fullName} was adopted ${years} year${plural} ago on ${birthDateFormatted}`;
 
-} else if (npcHellCharacters.includes(char)) {
+} else if (npcHellCharacters.some(c => c.fullName === char.fullName)) {
 
-    if (npcHellCharacters.includes(char)) {
-      msgToSend = npcHellMessages[0]
-        .replace(/{fullName}/g, char.fullName)
-        .replace(/{birthDate}/g, birthDateFormatted)
-        .replace(/{deathDate}/g, deathDateFormatted);
-    } else if (deadCharacters.includes(char)) {
-      msgToSend = deadMessagesPost1916[0]
-        .replace(/{fullName}/g, char.fullName)
-        .replace(/{birthDate}/g, birthDateFormatted)
-        .replace(/{deathDate}/g, deathDateFormatted)
-        .replace(/{age}/g, age)
-        .replace(/{name}/g, char.name)
-        .replace(/{ageOrdinal}/g, getOrdinal(age));
-    } else {
-      const template = normalMessages[Math.floor(Math.random() * normalMessages.length)];
-      msgToSend = template
-        .replace(/{fullName}/g, char.fullName)
-        .replace(/{birthDate}/g, birthDateFormatted)
-        .replace(/{age}/g, age)
-        .replace(/{name}/g, char.name);
-    }
+  msgToSend = npcHellMessages[0]
+    .replace(/{fullName}/g, char.fullName)
+    .replace(/{birthDate}/g, birthDateFormatted)
+    .replace(/{deathDate}/g, deathDateFormatted);
 
-    sendBirthday(channel, groupHeader + msgToSend);
-    // After first message, remove groupHeader so it only appears once
-    groupHeader = "";
+} else if (deadCharacters.some(c => c.fullName === char.fullName)) {
+
+  msgToSend = deadMessagesPost1916[0]
+    .replace(/{fullName}/g, char.fullName)
+    .replace(/{birthDate}/g, birthDateFormatted)
+    .replace(/{deathDate}/g, deathDateFormatted)
+    .replace(/{age}/g, age)
+    .replace(/{name}/g, char.name)
+    .replace(/{ageOrdinal}/g, getOrdinal(age));
+
+} else {
+
+  const template = normalMessages[Math.floor(Math.random() * normalMessages.length)];
+  msgToSend = template
+    .replace(/{fullName}/g, char.fullName)
+    .replace(/{birthDate}/g, birthDateFormatted)
+    .replace(/{age}/g, age)
+    .replace(/{name}/g, char.name);
+
+}
+sendBirthday(channel, groupHeader + msgToSend);
+groupHeader = "";
+
   });
+
 }
 
 // - command handling -
