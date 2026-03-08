@@ -231,6 +231,53 @@ function sendBirthday(channel, text) {
   channel.send(text).then(m => reactBirthday(m));
 }
 
+function sendBirthdaysWithGrouping(channel, chars, simulatedDate = null) {
+  if (!chars || chars.length === 0) return;
+
+  const today = simulatedDate || new Date();
+
+  // Count how many characters share this birthday (exclude literal "Name & Name" combos)
+  const nonComboChars = chars.filter(c => !c.fullName.includes("&"));
+  let groupHeader = "";
+  if (nonComboChars.length === 2) groupHeader = "# BIRTHDAY TWINS!!\n\n";
+  if (nonComboChars.length === 3) groupHeader = "# BIRTHDAY TRIPLETS!!!\n\n";
+  if (nonComboChars.length === 4) groupHeader = "# BIRTHDAY QUADRUPLETS!!!!\n\n";
+
+  chars.forEach(char => {
+    const age = today.getFullYear() - new Date(char.birthDate).getFullYear();
+    const birthDateFormatted = formatDate(char.birthDate);
+    const deathDateFormatted = char.deathDate ? formatDate(char.deathDate) : "???";
+
+    let msgToSend = "";
+
+    if (npcHellCharacters.includes(char)) {
+      msgToSend = npcHellMessages[0]
+        .replace(/{fullName}/g, char.fullName)
+        .replace(/{birthDate}/g, birthDateFormatted)
+        .replace(/{deathDate}/g, deathDateFormatted);
+    } else if (deadCharacters.includes(char)) {
+      msgToSend = deadMessagesPost1916[0]
+        .replace(/{fullName}/g, char.fullName)
+        .replace(/{birthDate}/g, birthDateFormatted)
+        .replace(/{deathDate}/g, deathDateFormatted)
+        .replace(/{age}/g, age)
+        .replace(/{name}/g, char.name)
+        .replace(/{ageOrdinal}/g, getOrdinal(age));
+    } else {
+      const template = normalMessages[Math.floor(Math.random() * normalMessages.length)];
+      msgToSend = template
+        .replace(/{fullName}/g, char.fullName)
+        .replace(/{birthDate}/g, birthDateFormatted)
+        .replace(/{age}/g, age)
+        .replace(/{name}/g, char.name);
+    }
+
+    sendBirthday(channel, groupHeader + msgToSend);
+    // After first message, remove groupHeader so it only appears once
+    groupHeader = "";
+  });
+}
+
 // - command handling -
 client.on("messageCreate", message => {
   if (!message.guild) return; // ignore DMs
@@ -391,42 +438,18 @@ if (msg.startsWith("!birthday")) {
   }
   
   // TEST COMMANDS
+
   
 // ---- !testFirstnameLastname ----
 if (msg.startsWith("!test")) {
   const name = message.content.slice(5).trim().toLowerCase();
-  const char = allChars.find(c => c.fullName.toLowerCase() === name || c.name.toLowerCase() === name);
+  const char = allChars.find(
+    c => c.fullName.toLowerCase() === name || c.name.toLowerCase() === name
+  );
   if (!char) return message.reply(`⚠️ boy who the hell is "${name}"`);
 
-  const age = getAge(char);
-  const birthDateFormatted = formatDate(char.birthDate);
-  const deathDateFormatted = char.deathDate ? formatDate(char.deathDate) : "???";
-
-  let msgToSend = "";
-
-  if (npcHellCharacters.includes(char)) {
-    msgToSend = npcHellMessages[0]
-      .replace(/{fullName}/g, char.fullName)
-      .replace(/{birthDate}/g, birthDateFormatted)
-      .replace(/{deathDate}/g, deathDateFormatted);
-  } else if (deadCharacters.includes(char)) {
-    msgToSend = deadMessagesPost1916[0]
-      .replace(/{fullName}/g, char.fullName)
-      .replace(/{birthDate}/g, birthDateFormatted)
-      .replace(/{deathDate}/g, deathDateFormatted)
-      .replace(/{age}/g, age)
-      .replace(/{name}/g, char.name)
-      .replace(/{ageOrdinal}/g, getOrdinal(age));
-  } else {
-    const template = normalMessages[Math.floor(Math.random() * normalMessages.length)];
-    msgToSend = template
-      .replace(/{fullName}/g, char.fullName)
-      .replace(/{birthDate}/g, birthDateFormatted)
-      .replace(/{age}/g, age)
-      .replace(/{name}/g, char.name);
-  }
-
-  sendBirthday(message.channel, msgToSend);
+  // Use sendBirthdaysWithGrouping for consistent formatting (handles twins/triplets)
+  sendBirthdaysWithGrouping(message.channel, [char]);
   return;
 }
 
@@ -434,51 +457,26 @@ if (msg.startsWith("!test")) {
 if (msg.startsWith("!assume")) {
   const dateStr = message.content.slice(7).trim(); // e.g. "3-14"
   const [monthNum, dayNum] = dateStr.split("-").map(Number);
-  if (!monthNum || !dayNum) return message.reply("⚠️ invalid date format. Use !assumeMM-DD");
+  if (!monthNum || !dayNum) return message.reply("⚠️ fuck you");
 
   const today = new Date();
   const simulatedDate = new Date(today.getFullYear(), monthNum - 1, dayNum, 9, 0, 0);
-  
-  // simulate birthdays at 9 AM on that day
+
+  // combine all characters
   const allCharsSim = [...characters, ...deadCharacters, ...npcHellCharacters];
 
-  allCharsSim.forEach(char => {
+  // filter
+  const birthdayChars = allCharsSim.filter(char => {
     const [y, m, d] = char.birthDate.split("-").map(Number);
-    if (m === monthNum && d === dayNum) {
-      const age = simulatedDate.getFullYear() - y;
-      const birthDateFormatted = formatDate(char.birthDate);
-      const deathDateFormatted = char.deathDate ? formatDate(char.deathDate) : "???";
-
-      let msgToSend = "";
-
-      if (npcHellCharacters.includes(char)) {
-        msgToSend = npcHellMessages[0]
-          .replace(/{fullName}/g, char.fullName)
-          .replace(/{birthDate}/g, birthDateFormatted)
-          .replace(/{deathDate}/g, deathDateFormatted);
-      } else if (deadCharacters.includes(char)) {
-        msgToSend = deadMessagesPost1916[0]
-          .replace(/{fullName}/g, char.fullName)
-          .replace(/{birthDate}/g, birthDateFormatted)
-          .replace(/{deathDate}/g, deathDateFormatted)
-          .replace(/{age}/g, age)
-          .replace(/{name}/g, char.name)
-          .replace(/{ageOrdinal}/g, getOrdinal(age));
-      } else {
-        const template = normalMessages[Math.floor(Math.random() * normalMessages.length)];
-        msgToSend = template
-          .replace(/{fullName}/g, char.fullName)
-          .replace(/{birthDate}/g, birthDateFormatted)
-          .replace(/{age}/g, age)
-          .replace(/{name}/g, char.name);
-      }
-
-      sendBirthday(message.channel, msgToSend);
-    }
+    return m === monthNum && d === dayNum;
   });
+
+  // send birthdays using group
+  sendBirthdaysWithGrouping(message.channel, birthdayChars, simulatedDate);
 
   return;
 }
+
 });
 
 // - scheduled tasks -
