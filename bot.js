@@ -233,10 +233,12 @@ function sendBirthday(channel, text) {
 
 // - command handling -
 client.on("messageCreate", message => {
-  if (!message.guild) return;
+  if (!message.guild) return; // ignore DMs
   const msg = message.content.toLowerCase();
 
-  // list commands
+  const allChars = [...characters, ...deadCharacters, ...npcHellCharacters];
+
+  // ---- !commandsplease ----
   if (msg === "!commandsplease") {
     return message.reply(`
 !birthday (character)
@@ -250,89 +252,78 @@ client.on("messageCreate", message => {
 `);
   }
 
-  // age command
+  // ---- !age (character) ----
   if (msg.startsWith("!age")) {
     const name = message.content.slice(4).trim().toLowerCase();
-    const all = [...characters, ...deadCharacters, ...npcHellCharacters];
-    const char = all.find(c => c.fullName.toLowerCase() === name);
+    const char = allChars.find(c => c.fullName.toLowerCase() === name);
     if (!char) return message.reply(`⚠️ boy who the hell is "${name}"`);
     return message.reply(`${char.fullName} is ${getAge(char)} years old.`);
   }
 
-  // countdown command
+  // ---- !countdown (character) ----
   if (msg.startsWith("!countdown")) {
     const name = message.content.slice(10).trim().toLowerCase();
-    const all = [...characters, ...deadCharacters, ...npcHellCharacters];
-    const char = all.find(c => c.fullName.toLowerCase() === name);
+    const char = allChars.find(c => c.fullName.toLowerCase() === name);
     if (!char) return message.reply(`⚠️ boy who the hell is "${name}"`);
-    const age = getAge(char) + 1;
+    const ageNext = getAge(char) + 1;
     return message.reply(
-      `There are ${daysUntilBirthday(char)} days until ${char.name}'s ${getOrdinal(age)} birthday on ${formatDate(char.birthDate)}!`
+      `There are ${daysUntilBirthday(char)} days until ${char.name}'s ${getOrdinal(ageNext)} birthday on ${formatDate(char.birthDate)}!`
     );
   }
-  
-  // birthday command
-if (msg.startsWith("!birthday")) {
-  const name = message.content.slice(9).trim().toLowerCase();
-  const all = [...characters, ...deadCharacters, ...npcHellCharacters];
-  const char = all.find(c => c.fullName.toLowerCase() === name || c.name.toLowerCase() === name);
-  if (!char) return message.reply(`⚠️ boy who the hell is "${name}"`);
 
-  const today = new Date();
-  const age = getAge(char);
-  const birthDateFormatted = formatDate(char.birthDate);
-  const deathDateFormatted = char.deathDate ? formatDate(char.deathDate) : "???";
+  // ---- !birthday (character) ----
+  if (msg.startsWith("!birthday")) {
+    const name = message.content.slice(9).trim().toLowerCase();
+    const char = allChars.find(c => c.fullName.toLowerCase() === name || c.name.toLowerCase() === name);
+    if (!char) return message.reply(`⚠️ boy who the hell is "${name}"`);
 
-  let msgToSend = "";
+    const age = getAge(char);
+    const birthDateFormatted = formatDate(char.birthDate);
+    const deathDateFormatted = char.deathDate ? formatDate(char.deathDate) : "???";
 
-  // NPC hell
-  if (npcHellCharacters.includes(char)) {
-    msgToSend = npcHellMessages[0]
-      .replace(/{fullName}/g, char.fullName)
-      .replace(/{birthDate}/g, birthDateFormatted)
-      .replace(/{deathDate}/g, deathDateFormatted);
-  }
-  // dead characters
-  else if (deadCharacters.includes(char)) {
-    msgToSend = deadMessagesPost1916[0]
-      .replace(/{fullName}/g, char.fullName)
-      .replace(/{birthDate}/g, birthDateFormatted)
-      .replace(/{deathDate}/g, deathDateFormatted)
-      .replace(/{age}/g, age)
-      .replace(/{name}/g, char.name)
-      .replace(/{ageOrdinal}/g, getOrdinal(age));
-  }
-  // normal characters
-  else {
-    const template = normalMessages[Math.floor(Math.random() * normalMessages.length)];
-    msgToSend = template
-      .replace(/{fullName}/g, char.fullName)
-      .replace(/{birthDate}/g, birthDateFormatted)
-      .replace(/{age}/g, age)
-      .replace(/{name}/g, char.name);
+    let msgToSend = "";
+
+    if (npcHellCharacters.includes(char)) {
+      msgToSend = npcHellMessages[0]
+        .replace(/{fullName}/g, char.fullName)
+        .replace(/{birthDate}/g, birthDateFormatted)
+        .replace(/{deathDate}/g, deathDateFormatted);
+    } else if (deadCharacters.includes(char)) {
+      msgToSend = deadMessagesPost1916[0]
+        .replace(/{fullName}/g, char.fullName)
+        .replace(/{birthDate}/g, birthDateFormatted)
+        .replace(/{deathDate}/g, deathDateFormatted)
+        .replace(/{age}/g, age)
+        .replace(/{name}/g, char.name)
+        .replace(/{ageOrdinal}/g, getOrdinal(age));
+    } else {
+      const template = normalMessages[Math.floor(Math.random() * normalMessages.length)];
+      msgToSend = template
+        .replace(/{fullName}/g, char.fullName)
+        .replace(/{birthDate}/g, birthDateFormatted)
+        .replace(/{age}/g, age)
+        .replace(/{name}/g, char.name);
+    }
+
+    return sendBirthday(message.channel, msgToSend);
   }
 
-  sendBirthday(message.channel, msgToSend);
-}
-
-  // happy birthday command
+  // ---- !happybirthday (character) ----
   if (msg.startsWith("!happybirthday")) {
     const name = message.content.slice(14).trim();
     if (!name) return message.reply(`⚠️ boy who the hell is "${name}"`);
-    sendBirthday(message.channel, `# 🎂 Happy birthday, ${name}!`);
+    return sendBirthday(message.channel, `# 🎂 Happy birthday, ${name}!`);
   }
 
-  // its my birthday command
+  // ---- !itsmybirthday ----
   if (msg === "!itsmybirthday") {
     return message.channel.send(`@everyone
 # EVERYONE SHUT THE FUCK UP IT'S ${message.author}'S BIRTHDAY!!!! HAPPY BIRTHDAY!!!!!!!!`);
   }
 
-  // fun facts
+  // ---- !funfact ----
   if (msg === "!funfact") {
-    const allChars = [...characters, ...deadCharacters, ...npcHellCharacters];
-
-    // average birthday calculation
+    // average birthday
     let totalDay = 0;
     allChars.forEach(c => {
       const d = new Date(c.birthDate);
@@ -343,7 +334,7 @@ if (msg.startsWith("!birthday")) {
     avgDate.setDate(avgDay);
     const averageBirthday = `The average birthday of these characters is ${monthNames[avgDate.getMonth()]} ${getOrdinal(avgDate.getDate())}.`;
 
-    // average age calculation
+    // average age
     let totalAge = 0;
     allChars.forEach(c => { totalAge += getAge(c); });
     const avgAge = Math.round(totalAge / allChars.length);
@@ -371,6 +362,20 @@ if (msg.startsWith("!birthday")) {
 
     return message.reply(facts[Math.floor(Math.random() * facts.length)]);
   }
+
+  // ---- !checkbirthdays (today's birthdays) ----
+  if (msg === "!checkbirthdays") {
+    return sendTodaysBirthdays(message.channel);
+  }
+
+  // ---- !check(month)birthdays (specific month) ----
+  if (msg.startsWith("!check") && msg.endsWith("birthdays")) {
+    const monthName = msg.slice(6, -9).trim(); // extract month
+    const monthIndex = monthNames.findIndex(m => m.toLowerCase() === monthName.toLowerCase());
+    if (monthIndex === -1) return message.reply("⚠️ invalid month");
+    return sendMonthlyBirthdays(monthIndex, message.channel);
+  }
+
 });
 
 // - daily/monthly birthday functions -
