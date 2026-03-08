@@ -234,6 +234,8 @@ function sendBirthday(channel, text) {
 // - command handling -
 client.on("messageCreate", message => {
   if (!message.guild) return; // ignore DMs
+  if (message.author.bot) return; // ignore self
+  
   const msg = message.content.toLowerCase();
 
   const allChars = [...characters, ...deadCharacters, ...npcHellCharacters];
@@ -364,12 +366,13 @@ client.on("messageCreate", message => {
   }
 
   // ---- !check(month)birthdays (specific month) ----
-  if (msg.startsWith("!check") && msg.endsWith("birthdays")) {
-    const monthName = msg.slice(6, -9).trim(); // extract month
-    const monthIndex = monthNames.findIndex(m => m.toLowerCase() === monthName.toLowerCase());
-    if (monthIndex === -1) return message.reply("⚠️ that's not a month");
-    return sendMonthlyBirthdays(monthIndex, message.channel);
-  }
+if (msg.startsWith("!check") && msg.endsWith("birthdays")) {
+  const monthName = msg.slice(6, -9).trim(); // extract month
+  if (!monthName) return; // if nothing between, ignore
+  const monthIndex = monthNames.findIndex(m => m.toLowerCase() === monthName.toLowerCase());
+  if (monthIndex === -1) return message.reply("⚠️ that's not a month");
+  return sendMonthlyBirthdays(monthIndex, message.channel);
+}
 
   // ---- !checkbirthdays (all characters, sorted by age) ----
   if (msg === "!checkbirthdays") {
