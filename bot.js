@@ -363,70 +363,109 @@ client.on("messageCreate", message => {
     return message.reply(facts[Math.floor(Math.random() * facts.length)]);
   }
 
-  // ---- !checkbirthdays (today's birthdays) ----
-  if (msg === "!checkbirthdays") {
-    return sendTodaysBirthdays(message.channel);
-  }
-
   // ---- !check(month)birthdays (specific month) ----
   if (msg.startsWith("!check") && msg.endsWith("birthdays")) {
     const monthName = msg.slice(6, -9).trim(); // extract month
     const monthIndex = monthNames.findIndex(m => m.toLowerCase() === monthName.toLowerCase());
-    if (monthIndex === -1) return message.reply("⚠️ invalid month");
+    if (monthIndex === -1) return message.reply("⚠️ that's not a month");
     return sendMonthlyBirthdays(monthIndex, message.channel);
+  }
+
+  // ---- !checkbirthdays (all characters, sorted by age) ----
+  if (msg === "!checkbirthdays") {
+    const today = new Date();
+    allChars.forEach(c => {
+      const birth = new Date(c.birthDate);
+      let age = today.getFullYear() - birth.getFullYear();
+      const m = today.getMonth() - birth.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+      c._calculatedAge = age;
+    });
+
+    // sort by age ascending (youngest → oldest)
+    allChars.sort((a, b) => a._calculatedAge - b._calculatedAge);
+
+    // create formatted list
+    const birthdayList = allChars.map(char => {
+      const birthDateFormatted = formatDate(char.birthDate);
+      return `${char.fullName} (born ${birthDateFormatted})`;
+    });
+
+    // split into multiple messages if too long
+    const maxLength = 2000;
+    let messageChunk = "";
+    birthdayList.forEach(line => {
+      if ((messageChunk + "\n" + line).length > maxLength) {
+        message.channel.send(messageChunk);
+        messageChunk = line;
+      } else {
+        messageChunk += (messageChunk ? "\n" : "") + line;
+      }
+    });
+    if (messageChunk) message.channel.send(messageChunk);
   }
 
 });
 
-function sendTodaysBirthdays(channel) {
-  const today = new Date();
-  const month = today.getMonth() + 1;
-  const day = today.getDate();
+// - scheduled tasks -
+function scheduleDailyBirthdays() {
+  const now = new Date();
+  const next9am = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 0, 0, 0);
+  if (now >= next9am) next9am.setDate(next9am.getDate() + 1);
+  const delay = next9am - now;
 
-  const allChars = [...characters, ...deadCharacters, ...npcHellCharacters];
-
-  allChars.forEach(char => {
-    const [y, m, d] = char.birthDate.split("-").map(Number);
-    if (m === month && d === day) {
-      const age = getAge(char);
-      const birthDateFormatted = formatDate(char.birthDate);
-      const deathDateFormatted = char.deathDate ? formatDate(char.deathDate) : "???";
-      let msgToSend = "";
-
-      if (npcHellCharacters.includes(char)) {
-        msgToSend = npcHellMessages[0]
-          .replace(/{fullName}/g, char.fullName)
-          .replace(/{birthDate}/g, birthDateFormatted)
-          .replace(/{deathDate}/g, deathDateFormatted);
-      } else if (deadCharacters.includes(char)) {
-        msgToSend = deadMessagesPost1916[0]
-          .replace(/{fullName}/g, char.fullName)
-          .replace(/{birthDate}/g, birthDateFormatted)
-          .replace(/{deathDate}/g, deathDateFormatted)
-          .replace(/{age}/g, age)
-          .replace(/{name}/g, char.name)
-          .replace(/{ageOrdinal}/g, getOrdinal(age));
-      } else {
-        const template = normalMessages[Math.floor(Math.random() * normalMessages.length)];
-        msgToSend = template
-          .replace(/{fullName}/g, char.fullName)
-          .replace(/{birthDate}/g, birthDateFormatted)
-          .replace(/{age}/g, age)
-          .replace(/{name}/g, char.name);
-      }
-
-      channel.send(msgToSend).then(m => reactBirthday(m));
-    }
-  });
+  setTimeout(() => {
+    sendTodaysBirthdaysToAllGuilds();
+    setInterval(sendTodaysBirthdaysToAllGuilds, 24 * 60 * 60 * 1000);
+  }, delay);
 }
 
 function sendTodaysBirthdaysToAllGuilds() {
+  const today = new Date();
+  const allChars = [...characters, ...deadCharacters, ...npcHellCharacters];
+
   client.guilds.cache.forEach(guild => {
-    const channel = guild.channels.cache.find(
-      c => c.isTextBased() && c.name.toLowerCase() === "⋆˚☾⭒˚・birthdays" &&
+    const ch = guild.channels.cache.find(
+      c => c.isTextBased() &&
+           c.name.toLowerCase() === "⋆˚☾⭒˚・birthdays" &&
            c.permissionsFor(guild.members.me).has(PermissionsBitField.Flags.SendMessages)
     );
-    if (channel) sendTodaysBirthdays(channel);
+    if (ch) {
+      allChars.forEach(char => {
+        const [y, m, d] = char.birthDate.split("-").map(Number);
+        if (m === today.getMonth() + 1 && d === today.getDate()) {
+          const age = getAge(char);
+          const birthDateFormatted = formatDate(char.birthDate);
+          const deathDateFormatted = char.deathDate ? formatDate(char.deathDate) : "???";
+
+          let msgToSend = "";
+
+          if (npcHellCharacters.includes(char)) {
+            msgToSend = npcHellMessages[0]
+              .replace(/{fullName}/g, char.fullName)
+              .replace(/{birthDate}/g, birthDateFormatted)
+              .replace(/{deathDate}/g, deathDateFormatted);
+          } else if (deadCharacters.includes(char)) {
+            msgToSend = deadMessagesPost1916[0]
+              .replace(/{fullName}/g, char.fullName)
+              .replace(/{birthDate}/g, birthDateFormatted)
+              .replace(/{deathDate}/g, deathDateFormatted)
+              .replace(/{age}/g, age)
+              .replace(/{name}/g, char.name)
+              .replace(/{ageOrdinal}/g, getOrdinal(age));
+          } else {
+            const template = normalMessages[Math.floor(Math.random() * normalMessages.length)];
+            msgToSend = template
+              .replace(/{fullName}/g, char.fullName)
+              .replace(/{birthDate}/g, birthDateFormatted)
+              .replace(/{age}/g, age)
+              .replace(/{name}/g, char.name);
+          }
+
+          sendBirthday(ch, msgToSend);
+        }
+      });
+    }
   });
 }
 
@@ -450,25 +489,13 @@ function sendMonthlyBirthdays(monthIndex = null, channel = null) {
   } else {
     client.guilds.cache.forEach(guild => {
       const ch = guild.channels.cache.find(
-        c => c.isTextBased() && c.name.toLowerCase() === "⋆˚☾⭒˚・birthdays" &&
+        c => c.isTextBased() &&
+             c.name.toLowerCase() === "⋆˚☾⭒˚・birthdays" &&
              c.permissionsFor(guild.members.me).has(PermissionsBitField.Flags.SendMessages)
       );
       if (ch) ch.send(message);
     });
   }
-}
-
-// - scheduled tasks -
-function scheduleDailyBirthdays() {
-  const now = new Date();
-  const next9am = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 0, 0, 0);
-  if (now >= next9am) next9am.setDate(next9am.getDate() + 1);
-  const delay = next9am - now;
-
-  setTimeout(() => {
-    sendTodaysBirthdaysToAllGuilds();
-    setInterval(sendTodaysBirthdaysToAllGuilds, 24 * 60 * 60 * 1000);
-  }, delay);
 }
 
 function scheduleMonthlySummary() {
