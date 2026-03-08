@@ -310,43 +310,19 @@ client.on("messageCreate", message => {
     return;
   }
 
-  // ---- !birthday (character) ----
-  if (msg.startsWith("!birthday")) {
-    const name = message.content.slice(9).trim().toLowerCase();
-    const char = allChars.find(c => c.fullName.toLowerCase() === name || c.name.toLowerCase() === name);
-    if (!char) return message.reply(`⚠️ boy who the hell is "${name}"`);
+// ---- !birthday (character) ----
+if (msg.startsWith("!birthday")) {
+  const name = message.content.slice(9).trim().toLowerCase();
+  const char = allChars.find(c => c.fullName.toLowerCase() === name || c.name.toLowerCase() === name);
+  if (!char) return message.reply(`⚠️ boy who the hell is "${name}"`);
 
-    const age = getAge(char);
-    const birthDateFormatted = formatDate(char.birthDate);
-    const deathDateFormatted = char.deathDate ? formatDate(char.deathDate) : "???";
+  const birthDate = new Date(char.birthDate);
+  const birthDay = getOrdinal(birthDate.getDate());
+  const birthMonth = monthNames[birthDate.getMonth()];
 
-    let msgToSend = "";
-
-    if (npcHellCharacters.includes(char)) {
-      msgToSend = npcHellMessages[0]
-        .replace(/{fullName}/g, char.fullName)
-        .replace(/{birthDate}/g, birthDateFormatted)
-        .replace(/{deathDate}/g, deathDateFormatted);
-    } else if (deadCharacters.includes(char)) {
-      msgToSend = deadMessagesPost1916[0]
-        .replace(/{fullName}/g, char.fullName)
-        .replace(/{birthDate}/g, birthDateFormatted)
-        .replace(/{deathDate}/g, deathDateFormatted)
-        .replace(/{age}/g, age)
-        .replace(/{name}/g, char.name)
-        .replace(/{ageOrdinal}/g, getOrdinal(age));
-    } else {
-      const template = normalMessages[Math.floor(Math.random() * normalMessages.length)];
-      msgToSend = template
-        .replace(/{fullName}/g, char.fullName)
-        .replace(/{birthDate}/g, birthDateFormatted)
-        .replace(/{age}/g, age)
-        .replace(/{name}/g, char.name);
-    }
-
-    sendBirthday(message.channel, msgToSend);
-    return;
-  }
+  message.reply(`${char.fullName}'s birthday is ${birthMonth} ${birthDay}.`);
+  return;
+}
 
   // ---- !happybirthday (character) ----
   if (msg.startsWith("!happybirthday")) {
