@@ -85,7 +85,7 @@ const characters = [
   { name:"Lucian",fullName:"Lucian Ixtal",birthDate:"1986-06-01"},
   { name:"Ophelia",fullName:"Ophelia DiPietra",birthDate:"2007-06-09"},
   { name:"Matthias",fullName:"Matthias Moen",birthDate:"2008-06-13"},
-  { name:"Lancel",fullName:"Lancel Alegria",birthDate:"2000-06-21"},
+  { name:"Lancel",fullName:"Lancel Alegria",birthDate:"2009-06-21"},
   { name:"Angela",fullName:"Angela Del Bosque Ixtal",birthDate:"2016-06-24"},
   { name:"CJ",fullName:"CJ Doe",birthDate:"1998-06-25"},
   { name:"Cinder & Sage",fullName:"Cinder & Sage Whitlock",birthDate:"2016-06-30"},
@@ -129,7 +129,7 @@ const characters = [
 
 // dead
 const deadCharacters = [
-  { name:"Roxie Brindley",fullName:"Roxie Brindley",birthDate:"1947-01-20", deathDate:"0000-00-00"},
+  { name:"Roxie Brindley",fullName:"Roxie Brindley",birthDate:"1947-01-20", deathDate:"2024-10-31"},
   { name:"Solara",fullName:"Solara Mercia-Angevin",birthDate:"1922-02-28", deathDate:"2013-06-16"},
   { name:"Belladonna",fullName:"Belladonna Alegria",birthDate:"1985-03-24", deathDate:"2013-06-14"},
   { name:"Hayes",fullName:"Hayes Octavius",birthDate:"1902-03-24", deathDate:"2001-07-09"},
