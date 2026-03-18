@@ -69,6 +69,7 @@ const characters = [
   { name:"Corentin",fullName:"Corentin Whitlock",birthDate:"1980-03-06"},
   { name:"Octivia & Leslie",fullName:"Octivia & Leslie D'Arques",birthDate:"1999-03-14"},
   { name:"Baubles",fullName:"Baubles",birthDate:"1989-03-16"},
+  { name:"Dusty",fullName:"Dusty Whitlock",birthDate:"1995-04-02"},
   { name:"Kasper",fullName:"Kasper Vaughn",birthDate:"1999-04-05"},
   { name:"Gabriel",fullName:"Gabriel Maywood",birthDate:"1935-04-06"},
   { name:"Rosemary",fullName:"Rosemary Roseblade",birthDate:"2007-04-09"},
@@ -96,8 +97,8 @@ const characters = [
   { name:"Isla",fullName:"Isla Wispon",birthDate:"1981-07-31"},
   { name:"Judis",fullName:"Judis Ixtal",birthDate:"1989-08-01"},
   { name:"Avongara",fullName:"Avongara Signoria",birthDate:"1971-08-08"},
-  { name:"Sennett Reue",fullName:"Headmaster Sennett Reue",birthDate:"1940-08-13"},
-  { name:"Astrillia Wispon",fullName:"Astrillia Wispon",birthDate:"1924-08-21"},
+  { name:"Sennett",fullName:"Headmaster Sennett Reue",birthDate:"1940-08-13"},
+  { name:"Astrillia",fullName:"Astrillia Wispon",birthDate:"1924-08-21"},
   { name:"Sorin",fullName:"Sorin Valdis",birthDate:"1993-08-30"},
   { name:"Cassie",fullName:"Cassiopeia Heliotrope",birthDate:"2008-08-30"},
   { name:"Graham",fullName:"Graham Wispon",birthDate:"2008-09-02"},
@@ -114,7 +115,7 @@ const characters = [
   { name:"Bastian",fullName:"Bastian Audair",birthDate:"2006-11-12"},
   { name:"Circe",fullName:"Circe Nazaretian",birthDate:"2001-11-12"},
   { name:"Layna",fullName:"Layna Wispon",birthDate:"2025-11-13"},
-  { name:"Dusty",fullName:"Dusty Whitlock",birthDate:"1995-11-20"},
+  { name:"Mihra",fullName:"Mihra Del Bosque Ixtal",birthDate:"2025-11-15"},
   { name:"Vendetta",fullName:"Vendetta Sekmeht Sabretooth Van Damme-Deathbringer-Johnson",birthDate:"1978-11-30"},
   { name:"Eden",fullName:"Eden Maywood",birthDate:"2008-12-01"},
   { name:"Florence & Laurence",fullName:"Florence & Laurence Ixtal",birthDate:"2007-12-04"},
@@ -129,7 +130,7 @@ const characters = [
 
 // dead
 const deadCharacters = [
-  { name:"Roxie Brindley",fullName:"Roxie Brindley",birthDate:"1947-01-20", deathDate:"2024-10-31"},
+  { name:"Roxie",fullName:"Roxie Brindley",birthDate:"1947-01-20", deathDate:"2024-10-31"},
   { name:"Solara",fullName:"Solara Mercia-Angevin",birthDate:"1922-02-28", deathDate:"2013-06-16"},
   { name:"Belladonna",fullName:"Belladonna Alegria",birthDate:"1985-03-24", deathDate:"2013-06-14"},
   { name:"Hayes",fullName:"Hayes Octavius",birthDate:"1902-03-24", deathDate:"2001-07-09"},
@@ -260,7 +261,7 @@ function sendBirthdaysWithGrouping(channel, chars, simulatedDate = null) {
     let msgToSend = "";
 
 // special
-if (char.name === "Bastian" || char.name === "Isla") {
+if (char.name === "Bastian" || char.name === "Isla" || char.name === "Lucian") {
 
   msgToSend = `# Unfortunately, ${char.fullName} is still alive.
 
