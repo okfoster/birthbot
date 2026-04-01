@@ -82,7 +82,7 @@ const characters = [
   { name:"Jude",fullName:"Jude Whitlock",birthDate:"2008-05-08"},
   { name:"Cyrille",fullName:"Cyrille Visage",birthDate:"1974-05-13"},
   { name:"Gladys",fullName:"Gladys Dewberry",birthDate:"1952-05-22"},
-  { name:"Eiro",fullName:"Eiro Audair",birthDate:"2010-05-28"},
+  { name:"Eiro",fullName:"Eiro Audair",birthDate:"2009-05-28"},
   { name:"Lucian",fullName:"Lucian Ixtal",birthDate:"1986-06-01"},
   { name:"Ophelia",fullName:"Ophelia DiPietra",birthDate:"2007-06-09"},
   { name:"Matthias",fullName:"Matthias Moen",birthDate:"2008-06-13"},
