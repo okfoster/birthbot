@@ -11,7 +11,7 @@ const client = new Client({
   ],
 });
 
-// -------------------- CONFIG --------------------
+// config
 
 const birthdayReactions = ["🎂","🎉","🎈","🥳","🍰"];
 
@@ -20,7 +20,7 @@ const monthNames = [
   "July","August","September","October","November","December"
 ];
 
-// -------------------- TIME HELPERS --------------------
+// time helpers
 
 function getESTDate() {
   return new Date(
@@ -28,7 +28,7 @@ function getESTDate() {
   );
 }
 
-// -------------------- HELPERS --------------------
+// helpers
 
 function getOrdinal(n){
   const s = ["th","st","nd","rd"];
@@ -62,7 +62,7 @@ function daysUntilBirthday(character){
   return Math.ceil((next - today) / (1000 * 60 * 60 * 24));
 }
 
-// -------------------- REACTIONS --------------------
+// reactions
 
 function reactBirthday(message){
   birthdayReactions.forEach(e => message.react(e).catch(() => {}));
@@ -72,11 +72,11 @@ function sendBirthday(channel, text){
   channel.send(text).then(reactBirthday);
 }
 
-// -------------------- DATA --------------------
+// data
 
 const characters = [
   { name:"Yuri",fullName:"Yuri Malkovich",birthDate:"2007-01-01"},
-  { name:"Amor",fullName:"Amor Fati",birthDate:"2007-01-01"},
+  { name:"Amor",fullName:"Amor Visage",birthDate:"2007-01-01"},
   { name:"Clementine",fullName:"Clementine Ixtal",birthDate:"2009-01-01"},
   { name:"Hexe",fullName:"Hexe Zugasti",birthDate:"2011-01-01"},
   { name:"Cecilia",fullName:"Cecilia Wispon",birthDate:"2007-01-07"},
@@ -103,15 +103,21 @@ const characters = [
   { name:"Sapphire",fullName:"Sapphire Laroche",birthDate:"2007-05-04"},
   { name:"Jude",fullName:"Jude Whitlock",birthDate:"2008-05-08"},
   { name:"Cyrille",fullName:"Cyrille Visage",birthDate:"1974-05-13"},
+  { name:"Janus",fullName:"Janus Feyrune",birthDate:"1985-05-14"},
+  { name:"Sara",fullName:"Sara Maywood",birthDate:"2010-05-21"},
   { name:"Gladys",fullName:"Gladys Dewberry",birthDate:"1952-05-22"},
   { name:"Acheron",fullName:"Acheron Chrysó",birthDate:"2004-05-26"},
+  { name:"Indigo",fullName:"Indigo Sonastar",birthDate:"2009-05-27"},
   { name:"Eiro",fullName:"Eiro Audair",birthDate:"2009-05-28"},
   { name:"Lucian",fullName:"Lucian Ixtal",birthDate:"1986-06-01"},
   { name:"Ophelia",fullName:"Ophelia DiPietra",birthDate:"2007-06-09"},
+  { name:"Hayden",fullName:"Hayden Baker",birthDate:"2001-06-09"},
+  { name:"Runi",fullName:"Runi Wispon",birthDate:"2001-06-10"},
   { name:"Matthias",fullName:"Matthias Moen",birthDate:"2008-06-13"},
   { name:"Lancel",fullName:"Lancel Alegria",birthDate:"2009-06-21"},
   { name:"Angela",fullName:"Angela Del Bosque Ixtal",birthDate:"2016-06-24"},
   { name:"CJ",fullName:"CJ Doe",birthDate:"1998-06-25"},
+  { name:"Frankie",fullName:"Frankie Mercia-Whitlock",birthDate:"2013-06-28"},
   { name:"Cinder & Sage",fullName:"Cinder & Sage Whitlock",birthDate:"2016-06-30"},
   { name:"Maribelle",fullName:"Maribelle Orpheus",birthDate:"1985-07-05"},
   { name:"Nova",fullName:"Nova Sonastar",birthDate:"2007-07-08"},
@@ -119,6 +125,7 @@ const characters = [
   { name:"Tora",fullName:"Tora Maestri",birthDate:"2009-07-31"},
   { name:"Isla",fullName:"Isla Wispon",birthDate:"1981-07-31"},
   { name:"Judis",fullName:"Judis Ixtal",birthDate:"1989-08-01"},
+  { name:"Kore",fullName:"Kore Chrysókermá",birthDate:"2010-08-01"},
   { name:"Avongara",fullName:"Avongara Signoria",birthDate:"1971-08-08"},
   { name:"Styx",fullName:"Styx Chrysókérma",birthDate:"1918-08-12"},
   { name:"Sennett",fullName:"Headmaster Sennett Reue",birthDate:"1940-08-13"},
@@ -128,6 +135,7 @@ const characters = [
   { name:"Graham",fullName:"Graham Wispon",birthDate:"2008-09-02"},
   { name:"Penny",fullName:"Penny Magus",birthDate:"2013-09-11"},
   { name:"Barley",fullName:"Barley Carley",birthDate:"2006-09-30"},
+  { name:"Moor",fullName:"Moor Lucknot",birthDate:"1995-10-13"},
   { name:"Lucius & Yvaine",fullName:"Lucius Regens von Caelum-Alegria & Yvaine von Caelum",birthDate:"1984-10-14"},
   { name:"Calix",fullName:"Calix Luciano",birthDate:"1979-10-29"},
   { name:"Cassandra",fullName:"Cassandra Nephthys",birthDate:"1985-10-31"},
@@ -141,6 +149,7 @@ const characters = [
   { name:"Layna",fullName:"Layna Wispon",birthDate:"2025-11-13"},
   { name:"Mihra",fullName:"Mihra Del Bosque Ixtal",birthDate:"2025-11-15"},
   { name:"Vendetta",fullName:"Vendetta Sekmeht Sabretooth Van Damme-Deathbringer-Johnson",birthDate:"1978-11-30"},
+  { name:"Sylvie",fullName:"Sylvie Baudeal",birthDate:"2008-12-01"},
   { name:"Eden",fullName:"Eden Maywood",birthDate:"2008-12-01"},
   { name:"Valentine",fullName:"Valentine Chrysókérma",birthDate:"2000-12-02"},
   { name:"Florence & Laurence",fullName:"Florence & Laurence Ixtal",birthDate:"2007-12-04"},
@@ -304,7 +313,7 @@ if (char.name === "Bastian" || char.name === "Isla" || char.name === "Lucian") {
     .replace(/{birthDate}/g, birthDateFormatted)
     .replace(/{age}/g, age);
 
-} else if (char.name === "Brindley" || char.name === "Dusty") {
+} else if (char.name === "Brindley" || char.name === "Dusty" || char.name === "Frankie") {
 
   const years = age;
   const plural = years === 1 ? "" : "s";
@@ -517,7 +526,7 @@ if (msg.startsWith("!birthday")) {
     return;
   }
 
-  // ---- !check(month)birthdays (specific month) ----
+  // !check(month)birthdays
   if (msg.startsWith("!check") && msg.endsWith("birthdays")) {
     const monthName = msg.slice("!check".length, -9).trim(); // safer slicing
     if (!monthName) return; // ignore if empty
@@ -528,10 +537,10 @@ if (msg.startsWith("!birthday")) {
   }
   
   
-  // TEST COMMANDS
+  // test commands
 
   
-// ---- !testFirstnameLastname ----
+//!testFirstnameLastname
 if (msg.startsWith("!test")) {
   const name = message.content.slice(5).trim().toLowerCase();
   const char = allChars.find(
@@ -544,7 +553,7 @@ if (msg.startsWith("!test")) {
   return;
 }
 
-// ---- !assumeMM-DD ----
+// !assumeMM-DD
 if (msg.startsWith("!assume")) {
   const dateStr = message.content.slice(7).trim(); // e.g. "3-14"
   const [monthNum, dayNum] = dateStr.split("-").map(Number);
@@ -570,7 +579,7 @@ if (msg.startsWith("!assume")) {
 
 });
 
-// - scheduled tasks -
+// scheduled tasks
 
   function scheduleComaEvent() {
   const now = new Date();
@@ -696,9 +705,9 @@ function scheduleMonthlySummary() {
   }, delay);
 }
 
-// - ready event and login -
+// ready event
 client.once("ready", () => {
-  console.log("Bot ready");
+  console.log("ok i pull up");
   sendTodaysBirthdaysToAllGuilds();
   scheduleDailyBirthdays();
   scheduleMonthlySummary();
