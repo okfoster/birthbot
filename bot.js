@@ -1,4 +1,4 @@
-console.log("Starting bot.js...");
+﻿console.log("Starting bot.js...");
 const { Client, GatewayIntentBits, PermissionsBitField } = require("discord.js");
 require('dotenv').config();
 
@@ -71,7 +71,7 @@ const characters = [
   { name:"Baubles",fullName:"Baubles",birthDate:"1989-03-16"},
   { name:"Dusty",fullName:"Dusty Whitlock",birthDate:"1995-04-02"},
   { name:"Kasper",fullName:"Kasper Vaughn",birthDate:"1999-04-05"},
-  { name:"Gabriel",fullName:"Gabriel Maywood",birthDate:"1935-04-06"},
+  { name:"Gabriel",fullName:"Gabriel Maywood",birthDate:"1940-04-06"},
   { name:"Rosemary",fullName:"Rosemary Roseblade",birthDate:"2007-04-09"},
   { name:"Jett & Spencer",fullName:"Jett & Spencer Van Damme",birthDate:"2007-04-10"},
   { name:"Boris & Lanolin",fullName:"Boris & Lanolin Lambrych",birthDate:"2008-04-13"},
@@ -82,6 +82,7 @@ const characters = [
   { name:"Jude",fullName:"Jude Whitlock",birthDate:"2008-05-08"},
   { name:"Cyrille",fullName:"Cyrille Visage",birthDate:"1974-05-13"},
   { name:"Gladys",fullName:"Gladys Dewberry",birthDate:"1952-05-22"},
+  { name:"Acheron",fullName:"Acheron Chrysó",birthDate:"2004-05-26"},
   { name:"Eiro",fullName:"Eiro Audair",birthDate:"2009-05-28"},
   { name:"Lucian",fullName:"Lucian Ixtal",birthDate:"1986-06-01"},
   { name:"Ophelia",fullName:"Ophelia DiPietra",birthDate:"2007-06-09"},
@@ -97,6 +98,7 @@ const characters = [
   { name:"Isla",fullName:"Isla Wispon",birthDate:"1981-07-31"},
   { name:"Judis",fullName:"Judis Ixtal",birthDate:"1989-08-01"},
   { name:"Avongara",fullName:"Avongara Signoria",birthDate:"1971-08-08"},
+  { name:"Styx",fullName:"Styx Chrysókérma",birthDate:"1918-08-12"},
   { name:"Sennett",fullName:"Headmaster Sennett Reue",birthDate:"1940-08-13"},
   { name:"Astrillia",fullName:"Astrillia Wispon",birthDate:"1924-08-21"},
   { name:"Sorin",fullName:"Sorin Valdis",birthDate:"1993-08-30"},
@@ -118,6 +120,7 @@ const characters = [
   { name:"Mihra",fullName:"Mihra Del Bosque Ixtal",birthDate:"2025-11-15"},
   { name:"Vendetta",fullName:"Vendetta Sekmeht Sabretooth Van Damme-Deathbringer-Johnson",birthDate:"1978-11-30"},
   { name:"Eden",fullName:"Eden Maywood",birthDate:"2008-12-01"},
+  { name:"Valentine",fullName:"Valentine Chrysókérma",birthDate:"2000-12-02"},
   { name:"Florence & Laurence",fullName:"Florence & Laurence Ixtal",birthDate:"2007-12-04"},
   { name:"Angelina",fullName:"Angelina Malkovich",birthDate:"1983-12-05"},
   { name:"Bandit",fullName:"Bandit Van Damme",birthDate:"2010-12-08"},
@@ -126,12 +129,14 @@ const characters = [
   { name:"Tove",fullName:"Tovenaar Barlowe",birthDate:"1878-12-20"},
   { name:"Aisosa",fullName:"Aisosa Mokwena",birthDate:"1968-12-27"},
   { name:"Wisteria, Freyja & Vesper",fullName:"Wisteria, Freyja & Vesper Roseblade",birthDate:"1968-12-28"}
+  { name:"Meander",fullName:"Meander Chrysó",birthDate:"1943-12-31"}
 ];
 
 // dead
 const deadCharacters = [
   { name:"Roxie",fullName:"Roxie Brindley",birthDate:"1947-01-20", deathDate:"2024-10-31"},
-  { name:"Solara",fullName:"Solara Mercia-Angevin",birthDate:"1922-02-28", deathDate:"2013-06-16"},
+  { name:"Solara",fullName:"Solara Mercia-Angevin",birthDate:"1919-02-28", deathDate:"2013-06-16"},
+  { name:"Lethe",fullName:"Lethe Chrysókérma",birthDate:"1576-03-02", deathDate:"1676-03-01"},
   { name:"Belladonna",fullName:"Belladonna Alegria",birthDate:"1985-03-24", deathDate:"2013-06-14"},
   { name:"Hayes",fullName:"Hayes Octavius",birthDate:"1902-03-24", deathDate:"2001-07-09"},
   { name:"Callum",fullName:"Callum Faewulfe",birthDate:"1700-04-11", deathDate:"1736-12-15"},
@@ -267,6 +272,15 @@ if (char.name === "Bastian" || char.name === "Isla" || char.name === "Lucian") {
 
 **${char.fullName}** was born on ${birthDateFormatted} and is turning ${age} today.`;
 
+} else if (age >= 90 && !deadCharacters.some(c => c.fullName === char.fullName)) {
+
+  const template = oldMessages[Math.floor(Math.random() * oldMessages.length)];
+
+  msgToSend = template
+    .replace(/{fullName}/g, char.fullName)
+    .replace(/{birthDate}/g, birthDateFormatted)
+    .replace(/{age}/g, age);
+
 } else if (char.name === "Brindley" || char.name === "Dusty") {
 
   const years = age;
@@ -285,13 +299,27 @@ if (char.name === "Bastian" || char.name === "Isla" || char.name === "Lucian") {
 
 } else if (deadCharacters.some(c => c.fullName === char.fullName)) {
 
-  msgToSend = deadMessagesPost1916[0]
-    .replace(/{fullName}/g, char.fullName)
-    .replace(/{birthDate}/g, birthDateFormatted)
-    .replace(/{deathDate}/g, deathDateFormatted)
-    .replace(/{age}/g, age)
-    .replace(/{name}/g, char.name)
-    .replace(/{ageOrdinal}/g, getOrdinal(age));
+  if (age >= 120) {
+
+    // too old
+    msgToSend = deadMessagesPre1916[0]
+      .replace(/{fullName}/g, char.fullName)
+      .replace(/{birthDate}/g, birthDateFormatted)
+      .replace(/{deathDate}/g, deathDateFormatted)
+      .replace(/{ageOrdinal}/g, getOrdinal(age));
+
+  } else {
+
+    // normal
+    msgToSend = deadMessagesPost1916[0]
+      .replace(/{fullName}/g, char.fullName)
+      .replace(/{birthDate}/g, birthDateFormatted)
+      .replace(/{deathDate}/g, deathDateFormatted)
+      .replace(/{age}/g, age)
+      .replace(/{name}/g, char.name)
+      .replace(/{ageOrdinal}/g, getOrdinal(age));
+
+  } 
 
 } else {
 
@@ -351,7 +379,7 @@ client.on("messageCreate", message => {
       c._calculatedAge = age;
     });
 
-    // sort by age ascending (youngest → oldest)
+    // sort by age ascending (youngest �?oldest)
     allChars.sort((a, b) => a._calculatedAge - b._calculatedAge);
 
     // create formatted list
@@ -476,6 +504,7 @@ if (msg.startsWith("!birthday")) {
     return;
   }
   
+  
   // TEST COMMANDS
 
   
@@ -519,6 +548,54 @@ if (msg.startsWith("!assume")) {
 });
 
 // - scheduled tasks -
+
+  function scheduleComaEvent() {
+  const now = new Date();
+
+  // Only run on April 16
+  if (now.getMonth() !== 3 || now.getDate() !== 16) return;
+
+  // Helper to send to all birthday channels
+  function sendToAllChannels(text) {
+    client.guilds.cache.forEach(guild => {
+      const ch = guild.channels.cache.find(
+        c => c.isTextBased() &&
+             c.name.toLowerCase() === "⋆˚☾⭒˚・birthdays" &&
+             c.permissionsFor(guild.members.me).has(PermissionsBitField.Flags.SendMessages)
+      );
+      if (ch) ch.send(text);
+    });
+  }
+
+  // Helper to schedule a message
+  function schedule(hour, minute, text) {
+    const target = new Date();
+    target.setHours(hour, minute, 0, 0);
+
+    const delay = target - now;
+    if (delay <= 0) return; // skip if already passed
+
+    setTimeout(() => sendToAllChannels(text), delay);
+  }
+
+  // ---- Messages ----
+  schedule(20, 0, `Hello People of Azekereth.
+
+I accidentally went into a coma :( I am very sorry for any birthdays I missed. I am also very sorry for my xenophobia toward the Chrysókérmas, I am sorry for calling you trade and slander in Mandarin and Japanese respectively. I have recognized the error of my ways and promise to be better. For the rest of the day, the three birthdays that were missed while I was comatose will be wished a happy belated birthday!`);
+
+  schedule(20, 15, `# Happy belated birthday, Rosemary!
+
+**Rosemary Roseblade** was born April 9th, 2007, and turned 19 last Thursday!`);
+
+  schedule(21, 15, `# Happy belated birthday, Jett & Spencer!
+
+**Jett & Spencer Van Damme** were born April 10th, 2007, and turned 19 last Friday!`);
+
+  schedule(22, 15, `# Happy belated birthday, Boris & Lanolin!
+
+**Boris & Lanolin Lambrych** were born April 13th, 2008, and turned 18 on Monday!`);
+}
+
 function scheduleDailyBirthdays() {
   const now = new Date();
   const next9am = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 0, 0, 0);
@@ -602,6 +679,7 @@ client.once("ready", () => {
   sendTodaysBirthdaysToAllGuilds();
   scheduleDailyBirthdays();
   scheduleMonthlySummary();
+  scheduleComaEvent();
 });
 
 client.login(process.env.BOT_TOKEN);
