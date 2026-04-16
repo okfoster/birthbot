@@ -1,6 +1,7 @@
 ﻿console.log("Starting bot.js...");
+
 const { Client, GatewayIntentBits, PermissionsBitField } = require("discord.js");
-require('dotenv').config();
+require("dotenv").config();
 
 const client = new Client({
   intents: [
@@ -10,29 +11,40 @@ const client = new Client({
   ],
 });
 
-// reactions
+// -------------------- CONFIG --------------------
+
 const birthdayReactions = ["🎂","🎉","🎈","🥳","🍰"];
 
-// month names
 const monthNames = [
   "January","February","March","April","May","June",
   "July","August","September","October","November","December"
 ];
 
-// helper get ordinal for date
+// -------------------- TIME HELPERS --------------------
+
+function getESTDate() {
+  return new Date(
+    new Date().toLocaleString("en-US", { timeZone: "America/New_York" })
+  );
+}
+
+// -------------------- HELPERS --------------------
+
 function getOrdinal(n){
   const s = ["th","st","nd","rd"];
   const v = n % 100;
-  return n + (s[(v-20)%10] || s[v] || s[0]);
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
 }
 
-// helper format
 function formatDate(dateString){
   const d = new Date(dateString);
   return `${monthNames[d.getMonth()]} ${getOrdinal(d.getDate())}, ${d.getFullYear()}`;
 }
 
-// helper calculate age
+function isPluralCharacter(char){
+  return char.fullName.includes("&");
+}
+
 function getAge(character){
   const today = new Date();
   const birth = new Date(character.birthDate);
@@ -42,7 +54,6 @@ function getAge(character){
   return age;
 }
 
-// helper days until next birthday
 function daysUntilBirthday(character){
   const today = new Date();
   const birth = new Date(character.birthDate);
@@ -51,7 +62,18 @@ function daysUntilBirthday(character){
   return Math.ceil((next - today) / (1000 * 60 * 60 * 24));
 }
 
-// data
+// -------------------- REACTIONS --------------------
+
+function reactBirthday(message){
+  birthdayReactions.forEach(e => message.react(e).catch(() => {}));
+}
+
+function sendBirthday(channel, text){
+  channel.send(text).then(reactBirthday);
+}
+
+// -------------------- DATA --------------------
+
 const characters = [
   { name:"Yuri",fullName:"Yuri Malkovich",birthDate:"2007-01-01"},
   { name:"Amor",fullName:"Amor Fati",birthDate:"2007-01-01"},
@@ -128,9 +150,10 @@ const characters = [
   { name:"Avery",fullName:"Avery Whitlock",birthDate:"1979-12-14"},
   { name:"Tove",fullName:"Tovenaar Barlowe",birthDate:"1878-12-20"},
   { name:"Aisosa",fullName:"Aisosa Mokwena",birthDate:"1968-12-27"},
-  { name:"Wisteria, Freyja & Vesper",fullName:"Wisteria, Freyja & Vesper Roseblade",birthDate:"1968-12-28"}
+  { name:"Wisteria, Freyja & Vesper",fullName:"Wisteria, Freyja & Vesper Roseblade",birthDate:"1968-12-28"},
   { name:"Meander",fullName:"Meander Chrysó",birthDate:"1943-12-31"}
 ];
+
 
 // dead
 const deadCharacters = [
@@ -675,7 +698,7 @@ function scheduleMonthlySummary() {
 
 // - ready event and login -
 client.once("ready", () => {
-  console.log("ok i pull up");
+  console.log("Bot ready");
   sendTodaysBirthdaysToAllGuilds();
   scheduleDailyBirthdays();
   scheduleMonthlySummary();
