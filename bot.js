@@ -30,6 +30,10 @@ function getESTDate() {
 
 // helpers
 
+function reactOlaf(message) {
+  message.react("😐").catch(() => {});
+}
+
 function getOrdinal(n){
   const s = ["th","st","nd","rd"];
   const v = n % 100;
@@ -85,12 +89,14 @@ const characters = [
   { name:"Tristan",fullName:"Tristan Del Bosque Ixtal",birthDate:"2009-01-14"},
   { name:"Carlos",fullName:"Carlos Del Bosque Espinosa",birthDate:"1981-01-21"},
   { name:"Andreas",fullName:"Andreas Macado",birthDate:"2010-01-22"},
+  { name:"DRAYKO",fullName:"Ethaniel Rutherford Wellington",birthDate:"1999-01-24"},
   { name:"Lex",fullName:"Lex Whitlock",birthDate:"2011-01-28"},
   { name:"Victor & Alexander",fullName:"Victor & Alexander Wispon",birthDate:"1980-01-30"},
   { name:"Maerwynn",fullName:"Maerwynn Wispon",birthDate:"2011-02-14"},
   { name:"Corentin",fullName:"Corentin Whitlock",birthDate:"1980-03-06"},
   { name:"Octivia & Leslie",fullName:"Octivia & Leslie D'Arques",birthDate:"1999-03-14"},
   { name:"Baubles",fullName:"Baubles",birthDate:"1989-03-16"},
+  { name:"Cherry",fullName:"Cherry Sonastar",birthDate:"1999-03-19"},
   { name:"Dusty",fullName:"Dusty Whitlock",birthDate:"1995-04-02"},
   { name:"Kasper",fullName:"Kasper Vaughn",birthDate:"1999-04-05"},
   { name:"Gabriel",fullName:"Gabriel Maywood",birthDate:"1940-04-06"},
@@ -102,6 +108,7 @@ const characters = [
   { name:"Lotus",fullName:"Lotus Redtail",birthDate:"2011-05-01"},
   { name:"Sapphire",fullName:"Sapphire Laroche",birthDate:"2007-05-04"},
   { name:"Jude",fullName:"Jude Whitlock",birthDate:"2008-05-08"},
+  { name:"Apollo",fullName:"Apollo Maywood",birthDate:"1974-05-11"},
   { name:"Cyrille",fullName:"Cyrille Visage",birthDate:"1974-05-13"},
   { name:"Janus",fullName:"Janus Feyrune",birthDate:"1985-05-14"},
   { name:"Sara",fullName:"Sara Maywood",birthDate:"2010-05-21"},
@@ -117,7 +124,7 @@ const characters = [
   { name:"Lancel",fullName:"Lancel Alegria",birthDate:"2009-06-21"},
   { name:"Angela",fullName:"Angela Del Bosque Ixtal",birthDate:"2016-06-24"},
   { name:"CJ",fullName:"CJ Doe",birthDate:"1998-06-25"},
-  { name:"Frankie",fullName:"Frankie Mercia-Whitlock",birthDate:"2013-06-28"},
+  { name:"Frankie",fullName:"Frankie Mercia-Whitlock",birthDate:"2013-06-29"},
   { name:"Cinder & Sage",fullName:"Cinder & Sage Whitlock",birthDate:"2016-06-30"},
   { name:"Maribelle",fullName:"Maribelle Orpheus",birthDate:"1985-07-05"},
   { name:"Nova",fullName:"Nova Sonastar",birthDate:"2007-07-08"},
@@ -142,6 +149,7 @@ const characters = [
   { name:"Artemisia",fullName:"Artemisia Maywood",birthDate:"2003-10-31"},
   { name:"Saifuk",fullName:"Saifuk Jaziri",birthDate:"1949-10-31"},
   { name:"Brindley",fullName:"Brindley Alegria-Audair-Whitlock",birthDate:"2025-10-31"},
+  { name:"Miaou-Miaou",fullName:"Miaou-Miaou Whitlock",birthDate:"1998-11-09"},
   { name:"Dave",fullName:"Dave Faggetter",birthDate:"2011-11-11"},
   { name:"Inessa",fullName:"Inessa Solovyov",birthDate:"1992-11-11"},
   { name:"Bastian",fullName:"Bastian Audair",birthDate:"2006-11-12"},
@@ -172,10 +180,11 @@ const deadCharacters = [
   { name:"Belladonna",fullName:"Belladonna Alegria",birthDate:"1985-03-24", deathDate:"2013-06-14"},
   { name:"Hayes",fullName:"Hayes Octavius",birthDate:"1902-03-24", deathDate:"2001-07-09"},
   { name:"Callum",fullName:"Callum Faewulfe",birthDate:"1700-04-11", deathDate:"1736-12-15"},
+  { name:"Olaf",fullName:"Olaf Njessen",birthDate:"1911-04-24", deathDate:"2018-11-12"},
   { name:"Sung-ki",fullName:"Mok Sung-ki",birthDate:"1854-05-21", deathDate:"1881-09-09"},
   { name:"Taraji",fullName:"Taraji",birthDate:"1856-07-29", deathDate:"1950-04-26"},
   { name:"Clement",fullName:"Clement Maywood",birthDate:"1582-08-02", deathDate:"1670-10-10"},
-  { name:"Magni",fullName:"Magni Macado",birthDate:"1965-08-18", deathDate:"2013-06-14"},
+  { name:"Magni",fullName:"Magni Macado",birthDate:"1965-07-18", deathDate:"2013-06-14"},
   { name:"Atticus",fullName:"Atticus Wispon",birthDate:"1873-08-24", deathDate:"1991-12-31"},
   { name:"Judith",fullName:"Judith Maywood",birthDate:"1602-09-16", deathDate:"1618-09-14"},
   { name:"Althea",fullName:"Althea Rosgaard",birthDate:"1963-11-08", deathDate:"2018-12-28"},
@@ -185,7 +194,8 @@ const deadCharacters = [
 
 // NPC hell
 const npcHellCharacters = [
-  {name:"MINERVA",fullName:"Minerva Wispon",birthDate:"1853-08-24",deathDate:"1953-08-25"}
+  {name:"MINERVA",fullName:"Minerva Wispon",birthDate:"1853-08-24",deathDate:"1953-08-25"},
+  {name:"ERIDANOS",fullName:"Eridanos Chrysókérma",birthDate:"1948-06-01",deathDate:"2024-10-07"}
 ];
 
 // message templates
@@ -298,6 +308,20 @@ function sendBirthdaysWithGrouping(channel, chars, simulatedDate = null) {
     let msgToSend = "";
 
 // special
+
+if (
+  char.fullName === "Olaf Njessen" &&
+  today.getMonth() === 3 &&
+  today.getDate() === 24
+) {
+  msgToSend = `# ...Oh. Uh, it's Olaf's birthday or something.
+
+Idk I literally forgot to add him until yesterday. Olaf was born on April 24th 1911 and died in 2018 and nobody really cared.`;
+
+  channel.send(groupHeader + msgToSend).then(m => reactOlaf(m));
+  groupHeader = "";
+  return;
+}
 if (char.name === "Bastian" || char.name === "Isla" || char.name === "Lucian") {
 
   msgToSend = `# Unfortunately, ${char.fullName} is still alive.
@@ -313,7 +337,7 @@ if (char.name === "Bastian" || char.name === "Isla" || char.name === "Lucian") {
     .replace(/{birthDate}/g, birthDateFormatted)
     .replace(/{age}/g, age);
 
-} else if (char.name === "Brindley" || char.name === "Dusty" || char.name === "Frankie") {
+} else if (char.name === "Brindley" || char.name === "Dusty" || char.name === "Frankie" || char.name === "Miaou-Miaou") {
 
   const years = age;
   const plural = years === 1 ? "" : "s";
@@ -515,7 +539,7 @@ if (msg.startsWith("!birthday")) {
       "Turning either 10 or 25 years old on her next birthday depending on who you ask, Angela is either the youngest or oldest Academy graduate ever!",
       "This server's least favorite month is February. September is in second place, which is funny because Judith's birthday is in September.",
       "This server's favorite month is January. December and August are tied for second place.",
-      "Bastian, Isla, Lucian, Minerva, and Brindley all have special birthday messages.",
+      "Bastian, Isla, Lucian, Minerva, and the pets all have special birthday messages.",
       "It's been 3 years since I made a Discord bot before this one. My last bot was called \"Snail Facts with Avery Whitlock\" which recited snail facts before spiraling into grief fueled madness.",
       "My birthday is October 22nd :) It was 15 minutes away from being October 23rd though. Which pisses me off because I could've been birthday twins with Weird Al. Instead I am birthday twins with the gay guy from modern family though, which is also okay I guess.",
       "Birthbot's birthday is March 7th.",
