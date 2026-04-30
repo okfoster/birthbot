@@ -537,8 +537,8 @@ if (msg.startsWith("!birthday")) {
       "It's been 3 years since I made a Discord bot before this one. My last bot was called \"Snail Facts with Avery Whitlock\" which recited snail facts before spiraling into grief fueled madness.",
       "My birthday is October 22nd :) It was 15 minutes away from being October 23rd though. Which pisses me off because I could've been birthday twins with Weird Al. Instead I am birthday twins with the gay guy from modern family though, which is also okay I guess.",
       "Birthbot's birthday is March 7th.",
-      "Programming this bot took 7 hours of nonstop work and 2 red bulls. My back hurt very bad afterwards. Worth it though."
-	  "Birthbot is not actually a robot! Birthbot is a small, emaciated spindly gray creature chained to a radiator in a basement in Lithuania. Bet ya didn't see that coming!"
+      "Programming this bot took 7 hours of nonstop work and 2 red bulls. My back hurt very bad afterwards. Worth it though.",
+	  "Birthbot is not actually a robot! Birthbot is a small, emaciated spindly gray creature chained to a radiator in a basement in Lithuania. Bet ya didn't see that coming!",
 	  "I keep a list of all the unused birthdays to reference whenever I'm making a character because I'm really normal."
     ];
 
