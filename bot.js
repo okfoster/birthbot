@@ -122,6 +122,7 @@ const characters = [
   { name:"Ophelia",fullName:"Ophelia DiPietra",birthDate:"2007-06-09"},
   { name:"Hayden",fullName:"Hayden Baker",birthDate:"2001-06-09"},
   { name:"Runi",fullName:"Runi Wispon",birthDate:"2001-06-10"},
+  { name:"Reverie",fullName:"Reverie Audair",birthDate:"2001-06-11"},
   { name:"Matthias",fullName:"Matthias Moen",birthDate:"2008-06-13"},
   { name:"Lancel",fullName:"Lancel Alegria",birthDate:"2009-06-21"},
   { name:"Ozzy",fullName:"Ozzy Villa",birthDate:"2008-06-22"},
@@ -171,6 +172,7 @@ const characters = [
   { name:"Avery",fullName:"Avery Whitlock",birthDate:"1979-12-14"},
   { name:"Tove",fullName:"Tovenaar Barlowe",birthDate:"1878-12-20"},
   { name:"Aisosa",fullName:"Aisosa Mokwena",birthDate:"1968-12-27"},
+  { name:"Reverie",fullName:"Reverie Audair",birthDate:"1976-12-28"},
   { name:"Wisteria, Freyja & Vesper",fullName:"Wisteria, Freyja & Vesper Roseblade",birthDate:"1968-12-28"},
   { name:"Finnian",fullName:"Finnian Villa",birthDate:"2005-12-29"},
   { name:"Meander",fullName:"Meander Chrysó",birthDate:"1943-12-31"}
@@ -224,7 +226,7 @@ const oldMessages = [
 
 // post-1916
 const deadMessagesPost1916 = [
-  "# Happy heavenly birthday, {fullName}.\n\n**{fullName}** was born {birthDate} and died {deathDate}. They would be {age} today.",
+  "# Happy heavenly birthday, {name}.\n\n**{fullName}** was born {birthDate} and died {deathDate}. They would be {age} today.",
   "# Today would be {name}'s {ageOrdinal} birthday.\n\n**{fullName}** was born {birthDate} and died {deathDate}. They would be {age} today."
 ];
 
@@ -235,7 +237,7 @@ const deadMessagesPre1916 = [
 
 // NPC hell msg
 const npcHellMessages = [
-  "# THEY DON'T CELEBRATE BIRTHDAYS IN NPC HELL, {fullName} 🔥🔥🔥🔥🔥🔥\n\n**{fullName}** was born {birthDate} and the world was rid of them on {deathDate}."
+  "# THEY DON'T CELEBRATE BIRTHDAYS IN NPC HELL, {name} 🔥🔥🔥🔥🔥🔥\n\n**{fullName}** was born {birthDate} and the world was rid of them on {deathDate}."
 ];
 
 // helper reactions
@@ -314,20 +316,7 @@ function sendBirthdaysWithGrouping(channel, chars, simulatedDate = null) {
 
 // special
 
-if (
-  char.fullName === "Olaf Njessen" &&
-  today.getMonth() === 3 &&
-  today.getDate() === 24
-) {
-  msgToSend = `# ...Oh. Uh, it's Olaf's birthday or something.
-
-Idk I literally forgot to add him until yesterday. Olaf was born on April 24th 1911 and died in 2018 and nobody really cared.`;
-
-  channel.send(groupHeader + msgToSend).then(m => reactOlaf(m));
-  groupHeader = "";
-  return;
-}
-if (char.name === "Bastian" || char.name === "Isla" || char.name === "Lucian") {
+if (char.name === "Bastian" || char.name === "Isla" || char.name === "Lucian" || char.name === "DRAYKO") {
 
   msgToSend = `# Unfortunately, ${char.fullName} is still alive.
 
@@ -544,7 +533,7 @@ if (msg.startsWith("!birthday")) {
       "Turning either 10 or 25 years old on her next birthday depending on who you ask, Angela is either the youngest or oldest Academy graduate ever!",
       "This server's least favorite month is February. September is in second place, which is funny because Judith's birthday is in September.",
       "This server's favorite month is January. December and August are tied for second place.",
-      "Bastian, Isla, Lucian, Minerva, and the pets all have special birthday messages.",
+      "Evil people and the pets all have special birthday messages.",
       "It's been 3 years since I made a Discord bot before this one. My last bot was called \"Snail Facts with Avery Whitlock\" which recited snail facts before spiraling into grief fueled madness.",
       "My birthday is October 22nd :) It was 15 minutes away from being October 23rd though. Which pisses me off because I could've been birthday twins with Weird Al. Instead I am birthday twins with the gay guy from modern family though, which is also okay I guess.",
       "Birthbot's birthday is March 7th.",
@@ -658,19 +647,25 @@ I accidentally went into a coma :( I am very sorry for any birthdays I missed. I
 }
 
 function scheduleDailyBirthdays() {
-  const now = new Date();
-  const next9am = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 0, 0, 0);
-  if (now >= next9am) next9am.setDate(next9am.getDate() + 1);
-  const delay = next9am - now;
+  const now = getESTDate();
+
+  const nextMidnight = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() + 1,
+    0, 0, 0, 0
+  );
+
+  const delay = nextMidnight - now;
 
   setTimeout(() => {
     sendTodaysBirthdaysToAllGuilds();
-    setInterval(sendTodaysBirthdaysToAllGuilds, 24 * 60 * 60 * 1000);
+    scheduleDailyBirthdays();
   }, delay);
 }
 
 function sendTodaysBirthdaysToAllGuilds() {
-  const today = new Date();
+  const today = getESTDate();
   const allChars = [...characters, ...deadCharacters, ...npcHellCharacters];
 
   client.guilds.cache.forEach(guild => {
@@ -681,14 +676,12 @@ function sendTodaysBirthdaysToAllGuilds() {
     );
 
     if (ch) {
-
       const birthdayChars = allChars.filter(char => {
         const [y, m, d] = char.birthDate.split("-").map(Number);
         return m === today.getMonth() + 1 && d === today.getDate();
       });
 
       sendBirthdaysWithGrouping(ch, birthdayChars, today);
-
     }
   });
 }
@@ -737,10 +730,8 @@ function scheduleMonthlySummary() {
 // ready event
 client.once("ready", () => {
   console.log("ok i pull up");
-  sendTodaysBirthdaysToAllGuilds();
   scheduleDailyBirthdays();
   scheduleMonthlySummary();
-  scheduleComaEvent();
 });
 
 client.login(process.env.BOT_TOKEN);
