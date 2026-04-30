@@ -92,6 +92,7 @@ const characters = [
   { name:"DRAYKO",fullName:"Ethaniel Rutherford Wellington",birthDate:"1999-01-24"},
   { name:"Lex",fullName:"Lex Whitlock",birthDate:"2011-01-28"},
   { name:"Victor & Alexander",fullName:"Victor & Alexander Wispon",birthDate:"1980-01-30"},
+  { name:"Orb",fullName:"Viola's Orb",birthDate:"2023-02-03"},
   { name:"Maerwynn",fullName:"Maerwynn Wispon",birthDate:"2011-02-14"},
   { name:"Corentin",fullName:"Corentin Whitlock",birthDate:"1980-03-06"},
   { name:"Octivia & Leslie",fullName:"Octivia & Leslie D'Arques",birthDate:"1999-03-14"},
@@ -106,6 +107,7 @@ const characters = [
   { name:"The Large Scary Man",fullName:"The Large Scary Man",birthDate:"1959-04-18"},
   { name:"Kara",fullName:"Kara Kento",birthDate:"1999-04-30"},
   { name:"Lotus",fullName:"Lotus Redtail",birthDate:"2011-05-01"},
+  { name:"Krzysztof",fullName:"Krzysztof Sokolsky",birthDate:"2008-05-02"},
   { name:"Sapphire",fullName:"Sapphire Laroche",birthDate:"2007-05-04"},
   { name:"Jude",fullName:"Jude Whitlock",birthDate:"2008-05-08"},
   { name:"Apollo",fullName:"Apollo Maywood",birthDate:"1974-05-11"},
@@ -122,6 +124,7 @@ const characters = [
   { name:"Runi",fullName:"Runi Wispon",birthDate:"2001-06-10"},
   { name:"Matthias",fullName:"Matthias Moen",birthDate:"2008-06-13"},
   { name:"Lancel",fullName:"Lancel Alegria",birthDate:"2009-06-21"},
+  { name:"Ozzy",fullName:"Ozzy Villa",birthDate:"2008-06-22"},
   { name:"Angela",fullName:"Angela Del Bosque Ixtal",birthDate:"2016-06-24"},
   { name:"CJ",fullName:"CJ Doe",birthDate:"1998-06-25"},
   { name:"Frankie",fullName:"Frankie Mercia-Whitlock",birthDate:"2013-06-29"},
@@ -134,6 +137,7 @@ const characters = [
   { name:"Judis",fullName:"Judis Ixtal",birthDate:"1989-08-01"},
   { name:"Kore",fullName:"Kore Chrysókermá",birthDate:"2010-08-01"},
   { name:"Avongara",fullName:"Avongara Signoria",birthDate:"1971-08-08"},
+  { name:"Les",fullName:"Les Contreras Rojas",birthDate:"2005-08-10"},
   { name:"Styx",fullName:"Styx Chrysókérma",birthDate:"1918-08-12"},
   { name:"Sennett",fullName:"Headmaster Sennett Reue",birthDate:"1940-08-13"},
   { name:"Astrillia",fullName:"Astrillia Wispon",birthDate:"1924-08-21"},
@@ -168,6 +172,7 @@ const characters = [
   { name:"Tove",fullName:"Tovenaar Barlowe",birthDate:"1878-12-20"},
   { name:"Aisosa",fullName:"Aisosa Mokwena",birthDate:"1968-12-27"},
   { name:"Wisteria, Freyja & Vesper",fullName:"Wisteria, Freyja & Vesper Roseblade",birthDate:"1968-12-28"},
+  { name:"Finnian",fullName:"Finnian Villa",birthDate:"2005-12-29"},
   { name:"Meander",fullName:"Meander Chrysó",birthDate:"1943-12-31"}
 ];
 
