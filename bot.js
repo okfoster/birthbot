@@ -122,7 +122,7 @@ const characters = [
   { name:"Ophelia",fullName:"Ophelia DiPietra",birthDate:"2007-06-09"},
   { name:"Hayden",fullName:"Hayden Baker",birthDate:"2001-06-09"},
   { name:"Runi",fullName:"Runi Wispon",birthDate:"2001-06-10"},
-  { name:"Reverie",fullName:"Reverie Audair",birthDate:"2001-06-11"},
+  { name:"Reverie",fullName:"Reverie Audair",birthDate:"1978-06-11"},
   { name:"Matthias",fullName:"Matthias Moen",birthDate:"2008-06-13"},
   { name:"Lancel",fullName:"Lancel Alegria",birthDate:"2009-06-21"},
   { name:"Ozzy",fullName:"Ozzy Villa",birthDate:"2008-06-22"},
