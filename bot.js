@@ -135,7 +135,7 @@ const characters = [
   { name:"Caster",fullName:"Caster Sunrose",birthDate:"2008-07-01"},
   { name:"Maribelle",fullName:"Maribelle Orpheus",birthDate:"1985-07-05"},
   { name:"Nova",fullName:"Nova Sonastar",birthDate:"2007-07-08"},
-  [ name:"Chance", fullName:"St. Chance Harel",birthDate:"1975-07-09"),
+  { name:"Chance", fullName:"St. Chance Harel",birthDate:"1975-07-09"),
   { name:"Scythian",fullName:"Scythian Igenmorgenschweissenmann",birthDate:"1986-07-19"},
   { name:"Tora",fullName:"Tora Maestri",birthDate:"2009-07-31"},
   { name:"Isla",fullName:"Isla Wispon",birthDate:"1981-07-31"},
