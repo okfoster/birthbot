@@ -93,6 +93,7 @@ const characters = [
   { name:"Lex",fullName:"Lex Whitlock",birthDate:"2011-01-28"},
   { name:"Victor & Alexander",fullName:"Victor & Alexander Wispon",birthDate:"1980-01-30"},
   { name:"Orb",fullName:"Viola's Orb",birthDate:"2023-02-03"},
+  { name:"Gwynn",fullName:"Gwynn Dollins",birthDate:"1984-02-07"},
   { name:"Maerwynn",fullName:"Maerwynn Wispon",birthDate:"2011-02-14"},
   { name:"Corentin",fullName:"Corentin Whitlock",birthDate:"1980-03-06"},
   { name:"Octivia & Leslie",fullName:"Octivia & Leslie D'Arques",birthDate:"1999-03-14"},
@@ -128,10 +129,13 @@ const characters = [
   { name:"Ozzy",fullName:"Ozzy Villa",birthDate:"2008-06-22"},
   { name:"Angela",fullName:"Angela Del Bosque Ixtal",birthDate:"2016-06-24"},
   { name:"CJ",fullName:"CJ Doe",birthDate:"1998-06-25"},
+  { name:"Flynn",fullName:"Flynn Maywood",birthDate:"1989-06-28"},
   { name:"Frankie",fullName:"Frankie Mercia-Whitlock",birthDate:"2013-06-29"},
   { name:"Cinder & Sage",fullName:"Cinder & Sage Whitlock",birthDate:"2016-06-30"},
+  { name:"Caster",fullName:"Caster Sunrose",birthDate:"2008-07-01"},
   { name:"Maribelle",fullName:"Maribelle Orpheus",birthDate:"1985-07-05"},
   { name:"Nova",fullName:"Nova Sonastar",birthDate:"2007-07-08"},
+  [ name: "Chance", fullName:"St. Chance Harel",birthDate:"1975-07-09"),
   { name:"Scythian",fullName:"Scythian Igenmorgenschweissenmann",birthDate:"1986-07-19"},
   { name:"Tora",fullName:"Tora Maestri",birthDate:"2009-07-31"},
   { name:"Isla",fullName:"Isla Wispon",birthDate:"1981-07-31"},
@@ -316,7 +320,7 @@ function sendBirthdaysWithGrouping(channel, chars, simulatedDate = null) {
 
 // special
 
-if (char.name === "Bastian" || char.name === "Isla" || char.name === "Lucian" || char.name === "DRAYKO") {
+if (char.name === "Bastian" || char.name === "Isla" || char.name === "Lucian" || char.name === "DRAYKO" || char.name === "Chance") {
 
   msgToSend = `# Unfortunately, ${char.fullName} is still alive.
 
